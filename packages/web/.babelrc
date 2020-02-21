@@ -1,0 +1,13 @@
+{
+  "presets": [
+    "next/babel"
+  ],
+  "plugins": [
+    [
+      "@babel/plugin-proposal-unicode-property-regex",
+      {
+        "useUnicodeFlag": true
+      }
+    ]
+  ]
+}

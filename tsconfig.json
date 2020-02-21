@@ -1,0 +1,6 @@
+{
+  "extends": "@bluelovers/tsconfig/esm/module",
+  "compilerOptions": {
+    "noEmit": true
+  }
+}

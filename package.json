@@ -1,15 +1,24 @@
 {
   "name": "demonovel",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "lerna:publish": "npx lerna publish",
+    "lerna:publish:yes": "npx lerna publish --yes --cd-version patch",
+    "prepublish:lockfile": "npx sync-lockfile .",
+    "ncu": "npx yarn-tool ncu -u",
+    "sort-package-json": "npx yarn-tool sort",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "next": "9.2.2",
-    "react": "16.12.0",
-    "react-dom": "16.12.0"
-  }
+  "devDependencies": {
+    "@types/node": "*",
+    "@bluelovers/tsconfig": "latest"
+  },
+  "peerDependencies": {
+    "lerna": "^3"
+  },
+  "resolutions": {}
 }
