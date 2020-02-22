@@ -1,4 +1,6 @@
 const withWorkspacesSupport = require('webpack-workspaces-support/nextjs');
+const withSass = require('@zeit/next-sass');
+const withFonts = require('next-fonts');
 
 function chain(ls, nextConfig)
 {
@@ -18,6 +20,9 @@ module.exports = chain([
 		return nextConfig;
 	},
 ], chain([
+
+	withSass,
+	withFonts,
 
 	withWorkspacesSupport,
 

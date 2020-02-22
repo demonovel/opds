@@ -24,15 +24,22 @@
     "tsc:esm": "tsc -p tsconfig.esm.json"
   },
   "dependencies": {
+    "@material-ui/core": "^4.9.3",
+    "@zeit/next-sass": "^1.0.1",
     "isomorphic-unfetch": "^3.0.0",
+    "material-ui-theme-state": "^1.0.9",
     "next": "9.2.2",
+    "next-fonts": "^1.0.3",
+    "node-sass": "npm:sass",
     "react": "16.12.0",
     "react-dom": "16.12.0",
+    "react-xml": "^0.3.0",
     "typescript": "^3.9.0-dev.20200221"
   },
   "devDependencies": {
     "@bluelovers/tsconfig": "^1.0.18",
     "@types/node": "^13.7.4",
+    "@types/node-sass": "^4.11.0",
     "@types/react": "^16.9.22",
     "@types/react-dom": "^16.9.5",
     "webpack-workspaces-support": "^1.0.5"

@@ -85,4 +85,4 @@ jest.config.d.ts
 jest.config.js.map
 /report.*.json
 *.js.map
-.next
+/.cache/
