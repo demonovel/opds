@@ -8,6 +8,7 @@
   "main": "index.js",
   "scripts": {
     "build": "next build",
+    "build:export": "yarn build && next export",
     "coverage": "npx nyc yarn run test",
     "dev": "next dev",
     "lint": "npx eslint **/*.ts",
