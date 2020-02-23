@@ -156,6 +156,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 
 	if (data)
 	{
+		data.sort(sortUpdatedComp);
+
 		return res
 			.json(data)
 			;
