@@ -5,6 +5,9 @@ import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme';
 import { Button } from '@material-ui/core';
 import { ButtonTypeMap } from '@material-ui/core/Button/Button';
 
+import blue from '@material-ui/core/colors/blue';
+import purple from '@material-ui/core/colors/purple';
+
 import { useTheme, createTheme, IThemeExtra } from 'material-ui-theme-state/lib/global';
 
 export function prefersLightMode()
@@ -49,6 +52,8 @@ export default function (props)
 	([theme, setTheme] = useState({
 		palette: {
 			type: bool ? 'light': 'dark',
+			primary: blue,
+			secondary: purple,
 		},
 		typography: {
 			fontFamily: 'JetBrains Mono, Consolas',

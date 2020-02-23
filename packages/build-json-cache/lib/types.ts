@@ -12,6 +12,7 @@ export interface ICachedJSONRow
 	uuid: string;
 	id: string;
 	title: string;
+	subtitle?: string;
 	cover?: string;
 	authors?: string[];
 	updated: number;

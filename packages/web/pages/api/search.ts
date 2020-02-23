@@ -4,7 +4,16 @@ import zhRegExp from '../../lib/zhRegExp';
 import { array_unique_overwrite } from 'array-hyper-unique';
 import sortUpdatedComp from 'build-json-cache/lib/util/sortUpdated';
 import { ICachedJSONRowPlus } from 'build-json-cache/lib/types';
+import imgUnsplash from '../../lib/util/img/unsplash';
 //import buildJsonCacheCacheTempTitles from 'build-json-cache/.cache/temp/titles.json';
+
+export const config = {
+	api: {
+		bodyParser: {
+			sizeLimit: '1mb',
+		},
+	},
+};
 
 function toRe(input: string | string[], options: {
 	full?: boolean,
@@ -121,14 +130,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 				list
 					.filter(([title, ls]) =>
 					{
-
 						let bool = rs.some(r => r.test(title));
 
 						if (bool)
 						{
 							ids.push(...ls);
 						}
-					});
+					})
+				;
 
 				array_unique_overwrite(ids);
 
@@ -153,7 +162,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 		or: true,
 	});
 
-	if (tags.length || content.length || authors.length)
+	if (req.query.all || tags.length || content.length || authors.length)
 	{
 		if (typeof data === 'undefined')
 		{
@@ -189,7 +198,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 
 	if (data)
 	{
-		data.sort(sortUpdatedComp);
+		data
+			.sort(sortUpdatedComp)
+		;
 
 		return res
 			.json(data)
