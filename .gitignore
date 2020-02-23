@@ -86,3 +86,6 @@ jest.config.js.map
 /report.*.json
 *.js.map
 .next
+
+.now
+/.yarnrc
