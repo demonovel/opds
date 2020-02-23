@@ -68,15 +68,18 @@ function importBuildJsonCache<T>(type: 'titles' | 'build.all' | 'build.all.array
 	let p: Promise<any>;
 	if (type === 'titles')
 	{
-		p = import('build-json-cache/.cache/temp/titles')
+		//p = import('build-json-cache/.cache/temp/titles')
+		p = import('../../cache/temp/titles')
 	}
 	else if (type === 'build.all' || type === 'build.all.array')
 	{
-		p = import('build-json-cache/.cache/build.all')
+		//p = import('build-json-cache/.cache/build.all')
+		p = import('../../cache/build.all')
 	}
 	else if (type === 'build.all.array')
 	{
-		p = import('build-json-cache/.cache/build.all.array')
+		//p = import('build-json-cache/.cache/build.all.array')
+		p = import('../../cache/build.all.array')
 	}
 
 	return p
