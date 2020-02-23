@@ -4,7 +4,7 @@ import zhRegExp from '../../lib/zhRegExp';
 import { array_unique_overwrite } from 'array-hyper-unique';
 import sortUpdatedComp from 'build-json-cache/lib/util/sortUpdated';
 import { ICachedJSONRowPlus } from 'build-json-cache/lib/types';
-import buildJsonCacheCacheTempTitles from 'build-json-cache/.cache/temp/titles.json';
+//import buildJsonCacheCacheTempTitles from 'build-json-cache/.cache/temp/titles.json';
 
 function toRe(input: string | string[], options: {
 	full?: boolean,
@@ -73,8 +73,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 
 	if (title && title.length)
 	{
-		//data = await import('build-json-cache/.cache/temp/titles.json')
-		data = await Promise.resolve(buildJsonCacheCacheTempTitles)
+		data = await import('build-json-cache/.cache/temp/titles')
+		//data = await Promise.resolve(buildJsonCacheCacheTempTitles)
 			// @ts-ignore
 			.then(list => (list.default || list) as [string, string[]][])
 			.then(async (list) =>
@@ -99,7 +99,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 
 				array_unique_overwrite(ids);
 
-				return import('build-json-cache/.cache/build.all.json')
+				return import('build-json-cache/.cache/build.all')
 					.then(list => list.default || list)
 					.then(data =>
 					{
@@ -111,7 +111,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 
 	if (typeof data === 'undefined')
 	{
-		data = await import('build-json-cache/.cache/build.all.array.json')
+		data = await import('build-json-cache/.cache/build.all.array')
 			.then(list => list.default || list) as ICachedJSONRowPlus[]
 		;
 	}
