@@ -6,6 +6,10 @@
   "license": "ISC",
   "author": "",
   "main": "index.js",
+  "engines": {
+    "node": "^13",
+    "yarn": "1.22.0"
+  },
   "scripts": {
     "build": "next build",
     "build:export": "yarn build && next export",

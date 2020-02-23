@@ -5,6 +5,10 @@
   "workspaces": [
     "packages/*"
   ],
+  "engines": {
+    "node": "^13",
+    "yarn": "1.22.0"
+  },
   "scripts": {
     "build": "yarn && cd packages/web && next build",
     "start": "cd packages/web && next start",
