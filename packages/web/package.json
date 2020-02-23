@@ -11,7 +11,7 @@
     "yarn": "1.22.0"
   },
   "scripts": {
-    "build": "next build",
+    "build": "node -v && next build",
     "build:export": "yarn build && next export",
     "coverage": "npx nyc yarn run test",
     "dev": "next dev",
@@ -40,14 +40,14 @@
     "react": "16.12.0",
     "react-dom": "16.12.0",
     "react-xml": "^0.3.0",
-    "typescript": "^3.9.0-dev.20200221"
+    "typescript": "^3.9.0-dev.20200221",
+    "webpack-workspaces-support": "^1.0.5"
   },
   "devDependencies": {
     "@bluelovers/tsconfig": "^1.0.18",
     "@types/node": "^13.7.4",
     "@types/node-sass": "^4.11.0",
     "@types/react": "^16.9.22",
-    "@types/react-dom": "^16.9.5",
-    "webpack-workspaces-support": "^1.0.5"
+    "@types/react-dom": "^16.9.5"
   }
 }
