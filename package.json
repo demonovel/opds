@@ -21,10 +21,7 @@
   },
   "devDependencies": {
     "@bluelovers/tsconfig": "latest",
-    "@types/node": "*",
-    "esm": "^3.2.25",
-    "esm-ts-node": "^1.0.5",
-    "ts-node": "^8.6.2"
+    "@types/node": "*"
   },
   "peerDependencies": {
     "lerna": "^3"
