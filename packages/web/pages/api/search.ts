@@ -110,9 +110,14 @@ function importBuildJsonCache<T>(type: 'titles' | 'build.all' | 'build.all.array
 
 export default async (req: NextApiRequest, res: NextApiResponse) =>
 {
+	let query = {
+		...req.query,
+		...req.body,
+	};
+
 	let {
 		title,
-	} = req.query;
+	} = query;
 
 	let data: ICachedJSONRowPlus[];
 
@@ -123,6 +128,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 			{
 				let rs = toRe(title, {
 					or: true,
+					full: query.full,
 				});
 
 				let ids: string[] = [];
@@ -150,25 +156,36 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 			})
 	}
 
-	let { tags, content, authors } = req.query as any as Record<string, RegExp[]>;
+	let { tags, content, authors } = query as any as Record<string, RegExp[]>;
 
 	tags = toRe(tags as any, {
 		or: true,
+		full: query.full,
 	});
 	content = toRe(content as any, {
 		or: true,
+		full: query.full,
 	});
 	authors = toRe(authors as any, {
 		or: true,
+		full: query.full,
 	});
 
-	if (req.query.all || tags.length || content.length || authors.length)
+	if (query.all || tags.length || content.length || authors.length)
 	{
 		if (typeof data === 'undefined')
 		{
 			data = await importBuildJsonCache<ICachedJSONRowPlus[]>('build.all.array');
 		}
 	}
+
+	console.log({
+		all: query.all,
+		title,
+		tags,
+		content,
+		authors,
+	});
 
 	if (data && data.length)
 	{
@@ -189,12 +206,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 
 			if (bool && authors.length)
 			{
-				bool = testRe(content, item.content)
+				bool = testRe(authors, item.authors)
 			}
 
 			return bool
 		});
 	}
+
+
 
 	if (data)
 	{
@@ -206,12 +225,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 			.json(data)
 			;
 	}
+	else
+	{
+		console.dir(req)
+	}
 
 	res
 		.status(400)
 		.json({
 			error: true,
-			query: req.query,
+			query,
 		})
 	;
 }

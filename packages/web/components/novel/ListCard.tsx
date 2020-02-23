@@ -41,8 +41,11 @@ export interface INovelListComponentType
 export const ListCard = withWidth()((prop: INovelListComponentType) => {
 	return <Container maxWidth="xl">
 		<GridList cellHeight={180} cols={getGridListCols(prop)}>
-			{prop.dataList.map(tile => (
-				<GridListTile key={tile.uuid} cols={1}>
+			{prop.dataList.map((tile) => {
+
+				//console.log(tile.title, tile.updated, moment.unix(tile.updated).format());
+
+				return (<GridListTile key={tile.uuid} cols={1}>
 
 					<img
 						src={tile.cover}
@@ -60,7 +63,7 @@ export const ListCard = withWidth()((prop: INovelListComponentType) => {
 
 					<GridListTileBar
 						title={tile.title}
-						subtitle={moment(tile.updated).format()}
+						subtitle={tile.updated ? moment.unix(tile.updated).format() : ''}
 						actionPosition="left"
 						actionIcon={
 							<IconButton aria-label="add to favorites">
@@ -68,8 +71,8 @@ export const ListCard = withWidth()((prop: INovelListComponentType) => {
 							</IconButton>
 						}
 					/>
-				</GridListTile>
-			))}
+				</GridListTile>)
+			})}
 		</GridList>
 	</Container>
 });

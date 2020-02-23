@@ -22,6 +22,8 @@ import { makeStyles, Theme, createStyles, fade } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import useTheme from '@material-ui/core/styles/useTheme';
+import DiscordButton from '../DiscordButton';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 function useStylesWithDrawerWidth(drawerWidth: number)
 {
@@ -69,7 +71,7 @@ function useStylesWithDrawerWidth(drawerWidth: number)
 					duration: theme.transitions.duration.leavingScreen,
 				}),
 				overflowX: 'hidden',
-				width: theme.spacing(7) + 1,
+				width: theme.spacing(6) + 1,
 				[theme.breakpoints.up('sm')]: {
 					width: theme.spacing(9) + 1,
 				},
@@ -103,6 +105,9 @@ export default (prop: PropsWithChildren<{
 	const [open, setOpen] = useState(false);
 
 	return (<div className={classes.root}>
+
+		<CssBaseline/>
+
 		<AppBar
 			position="fixed"
 			color={"inherit"}
@@ -122,6 +127,7 @@ export default (prop: PropsWithChildren<{
 
 				{prop.barChildren ? prop.barChildren() : ''}
 
+				<DiscordButton/>
 			</Toolbar>
 		</AppBar>
 

@@ -10,13 +10,23 @@ export const fetchApi = (async (ctx: NextPageContext, input: string, init?: Requ
 		input = new URL(input as string, `http://${host}`).href
 	}
 
-	if (init.method === 'GET' && init.body)
+	if (init?.method === 'GET' && init.body)
 	{
-		input += '?' + init.body.toString();
-		delete init.body
+		if (init.body instanceof URLSearchParams)
+		{
+			input += '?' + init.body.toString();
+			delete init.body
+		}
+		else
+		{
+			init.method = 'POST';
+		}
 	}
 
-	//console.dir(ctx)
+	console.dir({
+		input,
+		init,
+	})
 
 	return fetch(input, init);
 });

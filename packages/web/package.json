@@ -33,6 +33,7 @@
     "@material-ui/core": "^4.9.3",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.43",
+    "@use-it/event-listener": "^0.1.3",
     "@zeit/next-sass": "^1.0.1",
     "build-json-cache": "1",
     "isomorphic-unfetch": "^3.0.0",
@@ -45,6 +46,8 @@
     "react": "16.12.0",
     "react-dom": "16.12.0",
     "react-router-dom": "^5.1.2",
+    "react-swipeable": "^5.5.1",
+    "react-use-gesture": "^7.0.4",
     "react-xml": "^0.3.0",
     "typescript": "^3.9.0-dev.20200221",
     "webpack-workspaces-support": "^1.0.5"

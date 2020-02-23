@@ -12,7 +12,7 @@ import { withRouter } from 'next/router'
 import PaginationItem from '../../components/router/PaginationItem';
 import Pagination from '../../components/router/Pagination';
 import { Typography } from '@material-ui/core';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createRef } from 'react';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
@@ -71,61 +71,28 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import AppBarWithDrawer from '../../components/layout/AppBarWithDrawer';
+import SearchBar from '../../components/SearchBar';
+import fetchNovelSearch from '../../lib/util/fetch/fetchNovelSearch';
+import DialogSelect from '../../components/novel/DialogSelect';
+import { useSwipeable } from "react-swipeable";
+import useEventListener from '@use-it/event-listener'
 
 interface INoveIndexComponentType extends INovelListComponentType
 {
 	defaultPage?: number,
+	isAll?: boolean,
 }
-
-const useStyles = makeStyles((theme: Theme) =>
-		createStyles({
-
-			search: {
-				position: 'relative',
-				borderRadius: theme.shape.borderRadius,
-				backgroundColor: fade(theme.palette.common.white, 0.15),
-				'&:hover': {
-					backgroundColor: fade(theme.palette.common.white, 0.25),
-				},
-				marginRight: theme.spacing(2),
-				marginLeft: 0,
-				width: '100%',
-				[theme.breakpoints.up('sm')]: {
-					marginLeft: theme.spacing(3),
-					//width: '60%',
-				},
-			},
-			searchIcon: {
-				width: theme.spacing(7),
-				height: '100%',
-				position: 'absolute',
-				pointerEvents: 'none',
-				display: 'flex',
-				alignItems: 'center',
-				justifyContent: 'center',
-			},
-			inputRoot: {
-				color: 'inherit',
-			},
-			inputInput: {
-				padding: theme.spacing(1, 1, 1, 7),
-				transition: theme.transitions.create('width'),
-				width: '100%',
-//			[theme.breakpoints.up('md')]: {
-//				width: 300,
-//			},
-			},
-		}),
-);
 
 const Index = (prop?: INoveIndexComponentType) =>
 {
-	const classes = useStyles();
-
 	let [dataList, setDataList] = useState([] as ICachedJSONRowPlus[]);
 	let [perPage, setPerPage] = useState(6);
 	let [page, setPage] = useState(prop.defaultPage | 0 || 1);
 	let [count, setCount] = useState(1);
+	let [searchType, changeSearchType] = useState('title');
+	let [isAll, setIsAll] = useState(prop.isAll);
+
+	let [fullMathSearch, changeFullMathSearch] = useState(false);
 
 	const updatePage = (newPage: number) =>
 	{
@@ -160,14 +127,83 @@ const Index = (prop?: INoveIndexComponentType) =>
 		return newDataList
 	};
 
+	const handlers = useSwipeable({
+		onSwipedLeft: () => updatePage(page + 1),
+		onSwipedRight: () => updatePage(page - 1),
+		preventDefaultTouchmoveEvent: true,
+		trackMouse: true,
+	});
+
+	// @ts-ignore
+	useEventListener('keydown', ({ key }) =>
+	{
+
+		switch (key)
+		{
+			case 'ArrowRight':
+			case 'PageDown':
+				updatePage(page + 1);
+				break;
+			case 'ArrowLeft':
+			case 'PageUp':
+				updatePage(page - 1);
+				break;
+		}
+	});
+
 	const changePage = (event, newPage: number) =>
 	{
 		updatePage(newPage)
 	};
 
-	const changePerPage = (event: React.ChangeEvent<{ value: unknown }>) =>
+	const searchRef = createRef<HTMLInputElement>();
+
+	const doSearch = async (options?: {
+		reset?: boolean,
+	}) =>
 	{
-		setPerPage(event.target.value as number);
+
+		//console.log(searchRef.current);
+
+		if (options?.reset)
+		{
+			searchRef.current.value = '';
+
+			if (isAll)
+			{
+				return;
+			}
+			else
+			{
+				let newDataList = await fetchNovelSearch({
+						all: 1,
+					})
+				;
+
+				setIsAll(true);
+				prop.dataList.splice(0, prop.dataList.length);
+				prop.dataList.push(...newDataList);
+				updatePage(1);
+				return;
+			}
+		}
+
+		let value = searchRef.current.value;
+
+		if (value)
+		{
+			let newDataList = await fetchNovelSearch({
+					[searchType]: value,
+					full: fullMathSearch,
+				})
+				.catch(e => [])
+			;
+
+			setIsAll(false);
+			prop.dataList.splice(0, prop.dataList.length);
+			prop.dataList.push(...newDataList);
+			updatePage(1)
+		}
 	};
 
 	useEffect(() =>
@@ -176,64 +212,61 @@ const Index = (prop?: INoveIndexComponentType) =>
 	}, [perPage]);
 
 	return (<AppBarWithDrawer
-			barChildren={() =>
-			{
-				return <>
-					<Typography variant="h6" noWrap>
+		barChildren={() =>
+		{
+			return (<>
+				<Typography variant="h6" noWrap>
 
-					</Typography>
-					<div className={classes.search}>
-						<div className={classes.searchIcon}>
-							<SearchIcon />
-						</div>
-						<InputBase
-							placeholder="Search…"
-							inputProps={{ 'aria-label': 'search' }}
-							classes={{
-								root: classes.inputRoot,
-								input: classes.inputInput,
-							}}
-						/>
-					</div>
-					<Select
-						value={perPage}
-						onChange={changePerPage}
-					>
-						<MenuItem value={4}>4</MenuItem>
-						<MenuItem value={6}>6</MenuItem>
-						<MenuItem value={9}>9</MenuItem>
-						<MenuItem value={10}>10</MenuItem>
-						<MenuItem value={15}>15</MenuItem>
-						<MenuItem value={25}>25</MenuItem>
-						<MenuItem value={30}>30</MenuItem>
-						<MenuItem value={34}>34</MenuItem>
-						<MenuItem value={36}>36</MenuItem>
-					</Select>
-				</>
-			}}
-			drawerChildren={() =>
-			{
-				return <>
-					<List>
-						{['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-							<ListItem button key={text}>
-								<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-								<ListItemText primary={text} />
-							</ListItem>
-						))}
-					</List>
-					<Divider />
-					<List>
-						{['All mail', 'Trash', 'Spam'].map((text, index) => (
-							<ListItem button key={text}>
-								<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-								<ListItemText primary={text} />
-							</ListItem>
-						))}
-					</List>
-				</>
-			}}
-		>
+				</Typography>
+
+				<SearchBar inputRef={searchRef} onClose={() => doSearch({
+					reset: true,
+				})} />
+
+				<IconButton type="submit" aria-label="search" color="secondary" onClick={() => doSearch()}>
+					<SearchIcon />
+				</IconButton>
+
+				<Divider />
+
+				<DialogSelect
+					perPage={perPage}
+					searchType={searchType}
+					changeSearchType={changeSearchType}
+					changePerPage={setPerPage}
+
+					fullMathSearch={fullMathSearch}
+					changeFullMathSearch={changeFullMathSearch}
+				/>
+
+			</>)
+		}}
+		drawerChildren={() =>
+		{
+			return (<>
+				<List>
+					{['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+						<ListItem button key={text}>
+							<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+							<ListItemText primary={text} />
+						</ListItem>
+					))}
+				</List>
+				<Divider />
+				<List>
+					{['All mail', 'Trash', 'Spam'].map((text, index) => (
+						<ListItem button key={text}>
+							<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+							<ListItemText primary={text} />
+						</ListItem>
+					))}
+				</List>
+			</>)
+		}}
+	>
+		<div {...handlers}>
+
+
 			<Box display="flex" justifyContent="center" m={1} p={1}>
 				<Pagination
 					color="secondary"
@@ -270,7 +303,9 @@ const Index = (prop?: INoveIndexComponentType) =>
 				/>
 
 			</Box>
-		</AppBarWithDrawer>)
+
+		</div>
+	</AppBarWithDrawer>)
 };
 
 (Index as NextComponentType).getInitialProps = async function (_ctx)
@@ -282,13 +317,24 @@ const Index = (prop?: INoveIndexComponentType) =>
 		return {};
 	}
 
-	let body = new URLSearchParams();
+	let body: RequestInit["body"] | Record<string, any>;
 
-	body.set('all', '1');
+	if (0)
+	{
+		body = new URLSearchParams();
+		body.set('all', '1');
+	}
+	else
+	{
+		body = {
+			all: 1,
+		}
+	}
 
 	let dataList: ICachedJSONRowPlus[];
+	let isAll: boolean;
 
-	if (1)
+	if (0)
 	{
 		dataList = [];
 
@@ -306,28 +352,17 @@ const Index = (prop?: INoveIndexComponentType) =>
 	}
 	else
 	{
-		dataList = await fetchApi(ctx, '/api/search', {
-			method: 'GET',
-			body,
-		})
-			.then(v => v.json())
-			.then(v =>
-			{
-				if (Array.isArray(v))
-				{
-					return v
-				}
-
-				console.error(v);
-
-				return Promise.reject(v)
-			})
+		dataList = await fetchNovelSearch(body, {}, ctx)
+			.catch(e => [])
 		;
+
+		isAll = !!dataList.length;
 	}
 
 	return {
 		defaultPage: (ctx?.query?.page as any) | 0 || 1,
 		dataList,
+		isAll,
 	} as INoveIndexComponentType
 };
 

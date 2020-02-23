@@ -7,11 +7,22 @@
     }
   ],
   "routes": [
+
+    {
+      "src": "/api/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=3600"
+      },
+
+      "continue": true
+    },
     {
       "src": "(.*)",
       "dest": "packages/web$1",
       "continue": true
-    }
+    },
+
+
   ],
   "github": {
     "silent": false,
