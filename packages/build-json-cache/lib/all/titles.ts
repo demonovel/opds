@@ -5,13 +5,13 @@
 import Bluebird from 'bluebird';
 import { readJSON, outputJSON } from 'fs-extra';
 import { join } from "path";
-import { __root } from '../../__root';
+import { __rootCache } from '../../__rootCache';
 import { ICachedJSONRowPlus, ICachedJSONRow } from '../types';
 import { slugifyNovel } from '../util/title';
 import { array_unique_overwrite } from 'array-hyper-unique';
 
 export default Bluebird
-	.resolve(readJSON(join(__root, '.cache', 'build.all.json')))
+	.resolve(readJSON(join(__rootCache, 'build.all.json')))
 	.then(async (table) =>
 	{
 		let list = Object.values(table) as (ICachedJSONRow & ICachedJSONRowPlus)[];
@@ -73,7 +73,7 @@ export default Bluebird
 			.map(v => array_unique_overwrite(v).sort())
 		;
 
-		return outputJSON(join(__root, '.cache', 'temp', `./titles.json`), Object.entries(titles))
+		return outputJSON(join(__rootCache, 'temp', `./titles.json`), Object.entries(titles))
 
 	})
 ;

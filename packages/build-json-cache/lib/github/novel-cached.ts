@@ -11,7 +11,7 @@ import cheerio from "cheerio";
 import { inspect } from "util";
 import { trim, newUUID } from '../util';
 import { ICachedJSONRow, pathPrefix } from '../types';
-import { __root } from '../../__root';
+import { __rootCache } from '../../__rootCache';
 
 export const id_packs_map = {
 	dmzj: 'cached-dmzj/data/novel/info.pack.json',
@@ -257,7 +257,7 @@ export function update<K extends keyof typeof id_packs_map>(siteID: K | string)
 		.then(data =>
 		{
 			return Bluebird.all([
-				outputJSON(join(join(__root, '.cache', 'build'), `./${siteID}.json`), data, {
+				outputJSON(join(join(__rootCache, 'build'), `./${siteID}.json`), data, {
 					spaces: 2,
 				}),
 			])

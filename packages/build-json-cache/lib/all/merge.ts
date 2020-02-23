@@ -4,7 +4,7 @@
 
 import { readJSON, outputJSON } from 'fs-extra';
 import { join } from 'path';
-import { __root } from '../../__root';
+import { __rootCache } from '../../__rootCache';
 import Bluebird from 'bluebird';
 import { ICachedJSONRowPlus } from '../types';
 import { cn2tw_min } from 'cjk-conv/lib/zh/convert/min';
@@ -19,7 +19,7 @@ export default Bluebird
 	].reduce((a, b) =>
 	{
 
-		a[b] = readJSON(join(__root, '.cache', 'build', b + '.json')) as any;
+		a[b] = readJSON(join(__rootCache, 'build', b + '.json')) as any;
 
 		return a;
 	}, {} as Record<string, Record<string, ICachedJSONRowPlus>>))
@@ -47,7 +47,7 @@ export default Bluebird
 							})
 						}
 
-						return outputJSON(join(__root, '.cache', 'split', `./${uuid}.json`), item);
+						return outputJSON(join(__rootCache, 'split', `./${uuid}.json`), item);
 					})
 				;
 
@@ -65,8 +65,8 @@ export default Bluebird
 		});
 
 		return Bluebird.all([
-			outputJSON(join(__root, '.cache', `./build.all.json`), data),
-			outputJSON(join(__root, '.cache', `./build.all.array.json`), arr),
+			outputJSON(join(__rootCache, `./build.all.json`), data),
+			outputJSON(join(__rootCache, `./build.all.array.json`), arr),
 		])
 	})
 ;

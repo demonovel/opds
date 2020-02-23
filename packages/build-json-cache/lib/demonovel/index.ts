@@ -7,7 +7,7 @@ import { ICachedJSONRow, ICachedJSONRowPlus } from '../types';
 import hashSum from 'hash-sum';
 import { outputJSON } from 'fs-extra';
 import { join } from "path";
-import { __root } from '../../__root';
+import { __rootCache } from '../../__rootCache';
 import { trim, newUUID } from '../util';
 
 export interface IFilterNovelDataPlus extends IFilterNovelData
@@ -109,7 +109,7 @@ export function update()
 		.then(data =>
 		{
 			return Bluebird.all([
-				outputJSON(join(join(__root, '.cache', 'build'), `./${siteID}.json`), data, {
+				outputJSON(join(join(__rootCache, 'build'), `./${siteID}.json`), data, {
 					spaces: 2,
 				}),
 			])

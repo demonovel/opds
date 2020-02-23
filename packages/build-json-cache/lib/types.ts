@@ -3,7 +3,7 @@
  */
 
 import { join } from "path";
-import { __root } from '../__root';
+import { __rootCache } from '../__rootCache';
 
 export interface ICachedJSONRow
 {
@@ -29,5 +29,5 @@ export interface ICachedJSONRowPlus extends ICachedJSONRow
 
 export const pathPrefix = {
 	github: 'https://github.com/bluelovers/ws-rest/raw/master/packages/%40node-novel/',
-	cache: join(__root, '.cache', 'cached') + '/',
+	cache: join(__rootCache, 'cached') + '/',
 };
