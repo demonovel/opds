@@ -12,7 +12,7 @@
   },
   "scripts": {
     "prebuild": "node -v",
-    "build": "esm-ts-node ./script/build.ts && next build",
+    "build": "esm-ts-node ./script/build && next build",
     "build:export": "yarn build && next export",
     "coverage": "npx nyc yarn run test",
     "dev": "next dev",
