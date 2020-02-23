@@ -76,7 +76,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 		data = await import('build-json-cache/.cache/temp/titles.json')
 		//data = await Promise.resolve(buildJsonCacheCacheTempTitles)
 			// @ts-ignore
-			.then(list => (list.default || list) as [string, string[]][])
+			.then((list: any) => (list.default || list) as [string, string[]][])
 			.then(async (list) =>
 			{
 				let rs = toRe(title, {
@@ -100,7 +100,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 				array_unique_overwrite(ids);
 
 				return import('build-json-cache/.cache/build.all.json')
-					.then(list => list.default || list)
+					.then((list: any) => list.default || list)
 					.then(data =>
 					{
 						return ids.map(uuid => data[uuid]);
@@ -112,7 +112,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 	if (typeof data === 'undefined')
 	{
 		data = await import('build-json-cache/.cache/build.all.array.json')
-			.then(list => list.default || list) as ICachedJSONRowPlus[]
+			.then((list: any) => list.default || list) as ICachedJSONRowPlus[]
 		;
 	}
 
