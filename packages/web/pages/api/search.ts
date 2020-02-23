@@ -63,6 +63,36 @@ function testRe(rs: RegExp[], target: string | string[])
 	return rs.some(r => r.test(target))
 }
 
+function importBuildJsonCache<T>(type: 'titles' | 'build.all' | 'build.all.array'): Promise<T>
+{
+	let p: Promise<any>;
+	if (type === 'titles')
+	{
+		p = import('build-json-cache/.cache/temp/titles')
+	}
+	else if (type === 'build.all' || type === 'build.all.array')
+	{
+		p = import('build-json-cache/.cache/build.all')
+	}
+	else if (type === 'build.all.array')
+	{
+		p = import('build-json-cache/.cache/build.all.array')
+	}
+
+	return p
+		.then((list: any) => list.default || list)
+		.then((data) => {
+
+			if (type === 'build.all.array')
+			{
+				return Object.values(data)
+			}
+
+			return data
+		})
+	;
+}
+
 export default async (req: NextApiRequest, res: NextApiResponse) =>
 {
 	let {
@@ -73,10 +103,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 
 	if (title && title.length)
 	{
-		data = await import('build-json-cache/.cache/temp/titles.json')
-		//data = await Promise.resolve(buildJsonCacheCacheTempTitles)
-			// @ts-ignore
-			.then((list: any) => (list.default || list) as [string, string[]][])
+		data = await importBuildJsonCache<[string, string[]][]>('titles')
 			.then(async (list) =>
 			{
 				let rs = toRe(title, {
@@ -99,8 +126,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 
 				array_unique_overwrite(ids);
 
-				return import('build-json-cache/.cache/build.all.json')
-					.then((list: any) => list.default || list)
+				return importBuildJsonCache<Record<string, ICachedJSONRowPlus>>('build.all')
 					.then(data =>
 					{
 						return ids.map(uuid => data[uuid]);
@@ -125,9 +151,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 	{
 		if (typeof data === 'undefined')
 		{
-			data = await import('build-json-cache/.cache/build.all.array.json')
-				.then((list: any) => list.default || list) as ICachedJSONRowPlus[]
-			;
+			data = await importBuildJsonCache<ICachedJSONRowPlus[]>('build.all.array');
 		}
 	}
 
