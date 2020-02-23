@@ -6,7 +6,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "cd packages/web && next build",
+    "build": "yarn && cd packages/web && next build",
     "start": "cd packages/web && next start",
     "lerna:publish": "npx lerna publish",
     "lerna:publish:yes": "npx lerna publish --yes --cd-version patch",

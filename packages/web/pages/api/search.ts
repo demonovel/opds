@@ -109,27 +109,30 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 			})
 	}
 
-	if (typeof data === 'undefined')
+	let { tags, content, authors } = req.query as any as Record<string, RegExp[]>;
+
+	tags = toRe(tags as any, {
+		or: true,
+	});
+	content = toRe(content as any, {
+		or: true,
+	});
+	authors = toRe(authors as any, {
+		or: true,
+	});
+
+	if (tags.length || content.length || authors.length)
 	{
-		data = await import('build-json-cache/.cache/build.all.array.json')
-			.then((list: any) => list.default || list) as ICachedJSONRowPlus[]
-		;
+		if (typeof data === 'undefined')
+		{
+			data = await import('build-json-cache/.cache/build.all.array.json')
+				.then((list: any) => list.default || list) as ICachedJSONRowPlus[]
+			;
+		}
 	}
 
-	if (data.length)
+	if (data && data.length)
 	{
-		let { tags, content, authors } = req.query as any as Record<string, RegExp[]>;
-
-		tags = toRe(tags as any, {
-			or: true,
-		});
-		content = toRe(content as any, {
-			or: true,
-		});
-		authors = toRe(authors as any, {
-			or: true,
-		});
-
 		data = data.filter(item =>
 		{
 
