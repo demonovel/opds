@@ -72,7 +72,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 
 	if (title && title.length)
 	{
-		data = await import('../../../build-json-cache/.cache/temp/titles.json')
+		data = await import('build-json-cache/.cache/temp/titles.json')
 			.then(list => (list.default || list) as [string, string[]][])
 			.then(async (list) =>
 			{
@@ -96,7 +96,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 
 				array_unique_overwrite(ids);
 
-				return import('../../../build-json-cache/.cache/build.all.json')
+				return import('build-json-cache/.cache/build.all.json')
 					.then(list => list.default || list)
 					.then(data =>
 					{
@@ -108,7 +108,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 
 	if (typeof data === 'undefined')
 	{
-		data = await import('../../../build-json-cache/.cache/build.all.array.json')
+		data = await import('build-json-cache/.cache/build.all.array.json')
 			.then(list => list.default || list) as ICachedJSONRowPlus[]
 		;
 	}
