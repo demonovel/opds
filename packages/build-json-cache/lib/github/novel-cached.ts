@@ -47,8 +47,10 @@ export function fetch<K extends keyof typeof id_packs_map>(siteID: K): Promise<R
 		;
 }
 
-export function fetchFile<K extends keyof typeof id_packs_map>(siteID: K): Promise<Record<string, Interface[K]>>
+export async function fetchFile<K extends keyof typeof id_packs_map>(siteID: K): Promise<Record<string, Interface[K]>>
 {
+	await fetch(siteID).catch(e => null);
+
 	return readJSON(join(pathPrefix.cache, `./${siteID}.json`))
 		.catch(e => fetch(siteID))
 		;

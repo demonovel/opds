@@ -11,7 +11,8 @@
     "yarn": "1.22.0"
   },
   "scripts": {
-    "build": "node -v && next build",
+    "prebuild": "node -v",
+    "build": "esm-ts-node ./script/build.ts && next build",
     "build:export": "yarn build && next export",
     "coverage": "npx nyc yarn run test",
     "dev": "next dev",
