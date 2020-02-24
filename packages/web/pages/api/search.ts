@@ -9,7 +9,7 @@ import { importBuildJsonCache } from '../../lib/novel/loader';
 export const config = {
 	api: {
 		bodyParser: {
-			sizeLimit: '1mb',
+			sizeLimit: '10mb',
 		},
 	},
 };

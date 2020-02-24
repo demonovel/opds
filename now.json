@@ -13,7 +13,6 @@
       "headers": {
         "cache-control": "s-maxage=3600"
       },
-
       "continue": true
     },
     {
