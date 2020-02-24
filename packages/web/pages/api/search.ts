@@ -24,7 +24,7 @@ function toRe(input: string | string[], options: {
 		.filter(v => typeof v !== 'undefined')
 		.map(s =>
 		{
-			s = handleSearchInput(s);
+			s = handleSearchInput(String(s));
 
 			if (s === '.*' || s === '')
 			{
@@ -87,12 +87,14 @@ function importBuildJsonCache<T>(type: 'titles' | 'build.all' | 'build.all.array
 		//p = import('build-json-cache/.cache/build.all')
 		p = import('../../cache/build.all')
 	}
+	/*
 	else if (type === 'build.all.array')
 	{
 		// @ts-ignore
 		//p = import('build-json-cache/.cache/build.all.array')
 		p = import('../../cache/build.all.array')
 	}
+	 */
 
 	return p
 		.then((list: any) => list.default || list)
@@ -156,6 +158,31 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 			})
 	}
 
+	let q2 = {
+		...query,
+	};
+
+	delete q2.title;
+	delete q2.full;
+	delete q2.all;
+
+	let q3 = {};
+
+	let bool = query.all || Object.entries(q2)
+		.map(([k, v]) => {
+
+			q3[k] = toRe(v as any, {
+				or: true,
+				full: query.full,
+			});
+
+			return q3[k];
+		})
+		// @ts-ignore
+		.some((v: string) => Boolean(v && v.length))
+	;
+
+	/*
 	let { tags, content, authors } = query as any as Record<string, RegExp[]>;
 
 	tags = toRe(tags as any, {
@@ -171,7 +198,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 		full: query.full,
 	});
 
-	if (query.all || tags.length || content.length || authors.length)
+	 */
+
+	if (bool)
 	{
 		if (typeof data === 'undefined')
 		{
@@ -181,10 +210,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 
 	console.log({
 		all: query.all,
-		title,
-		tags,
-		content,
-		authors,
+
+		...q2,
 	});
 
 	if (data && data.length)
@@ -194,6 +221,23 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 
 			let bool = true;
 
+			bool = (Object.entries(q3) as any as ([string, RegExp[]])[])
+				.every(([k, v]) => {
+
+					if (!v.length)
+					{
+						delete q3[k]
+					}
+					else
+					{
+						bool = testRe(q3[k], item[k])
+					}
+
+					return bool;
+				})
+			;
+
+			/*
 			if (bool && tags.length)
 			{
 				bool = item?.tags?.some(target => testRe(tags, target))
@@ -208,18 +252,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 			{
 				bool = testRe(authors, item.authors)
 			}
+			 */
 
 			return bool
 		});
 	}
-
-
 
 	if (data)
 	{
 		data
 			.sort(sortUpdatedComp)
 		;
+
+		if (req.method === 'GET')
+		{
+			res.setHeader('Cache-Control', `public, max-age=${3600 * 12}`);
+		}
 
 		return res
 			.json(data)
@@ -228,6 +276,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 	else
 	{
 		console.dir(req)
+		console.dir({
+			q2,
+			q3,
+		})
 	}
 
 	res

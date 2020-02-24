@@ -106,7 +106,7 @@ export default (prop: PropsWithChildren<{
 
 	return (<div className={classes.root}>
 
-		<CssBaseline/>
+
 
 		<AppBar
 			position="fixed"

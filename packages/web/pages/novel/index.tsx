@@ -76,6 +76,7 @@ import fetchNovelSearch from '../../lib/util/fetch/fetchNovelSearch';
 import DialogSelect from '../../components/novel/DialogSelect';
 import { useSwipeable } from "react-swipeable";
 import useEventListener from '@use-it/event-listener'
+import { EnumHandleClickType } from '../../components/novel/types';
 
 interface INoveIndexComponentType extends INovelListComponentType
 {
@@ -160,6 +161,9 @@ const Index = (prop?: INoveIndexComponentType) =>
 
 	const doSearch = async (options?: {
 		reset?: boolean,
+		field?: {
+			[k in keyof ICachedJSONRowPlus]: unknown
+		}
 	}) =>
 	{
 
@@ -188,14 +192,26 @@ const Index = (prop?: INoveIndexComponentType) =>
 			}
 		}
 
-		let value = searchRef.current.value;
+		let body: Record<string, any>;
 
-		if (value)
+		if (options.field)
 		{
-			let newDataList = await fetchNovelSearch({
-					[searchType]: value,
-					full: fullMathSearch,
-				})
+			body = {
+				...options.field,
+				full: fullMathSearch,
+			}
+		}
+		else if (searchRef.current.value)
+		{
+			body = {
+				[searchType]: searchRef.current.value,
+				full: fullMathSearch,
+			}
+		}
+
+		if (body)
+		{
+			let newDataList = await fetchNovelSearch(body)
 				.catch(e => [])
 			;
 
@@ -210,6 +226,36 @@ const Index = (prop?: INoveIndexComponentType) =>
 	{
 		updatePage(page)
 	}, [perPage]);
+
+	const handleClick = async (type: EnumHandleClickType, value, novel?: ICachedJSONRowPlus) =>
+	{
+
+		console.log({
+			type,
+			value,
+			siteID: novel.siteID,
+			title: novel.title,
+		})
+
+		switch (type)
+		{
+			case EnumHandleClickType.Favorite:
+			case EnumHandleClickType.novel:
+			case EnumHandleClickType.unknown:
+				break;
+			default:
+				if (novel && type in novel)
+				{
+					await doSearch({
+						// @ts-ignore
+						field: {
+							[type]: value,
+						}
+					})
+				}
+		}
+
+	};
 
 	return (<AppBarWithDrawer
 		barChildren={() =>
@@ -284,7 +330,10 @@ const Index = (prop?: INoveIndexComponentType) =>
 
 			<Box display="flex" justifyContent="center" m={1} p={1}>
 
-				<ListCard dataList={dataList} />
+				<ListCard
+					dataList={dataList}
+					handleClick={handleClick}
+				/>
 
 			</Box>
 

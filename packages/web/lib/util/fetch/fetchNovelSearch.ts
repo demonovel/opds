@@ -4,9 +4,30 @@ import { ICachedJSONRowPlus } from 'build-json-cache/lib/types';
 
 export default async (body, init?: RequestInit, ctx?: NextPageContext) => {
 
-	if (body && typeof body !== 'string' && !(body instanceof URLSearchParams))
+	console.dir(body)
+
+	if (body && typeof body !== 'string')
 	{
-		body = JSON.stringify(body)
+		if (!(body instanceof URLSearchParams))
+		{
+			let p = new URLSearchParams;
+
+			for (let key in body)
+			{
+				if (Array.isArray(body[key]))
+				{
+					body[key].forEach(v => p.append(key, v))
+				}
+				else
+				{
+					p.append(key, body[key])
+				}
+			}
+
+			body = p;
+		}
+
+		//body = JSON.stringify(body)
 	}
 
 	return fetchApi(ctx, '/api/search', {
