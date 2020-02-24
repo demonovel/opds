@@ -152,7 +152,7 @@ export const ListCard = withWidth()((prop: INovelListComponentType) =>
 							placement={"right"}
 							title={<>
 								<Typography>
-									<LinkBreak>{(novel.content ? novel.content : '')}</LinkBreak>
+									<LinkBreak>{(novel.content ? novel.content : '無簡介')}</LinkBreak>
 								</Typography>
 							</>}>
 						<img

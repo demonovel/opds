@@ -1,11 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { handleSearchInput } from '../../lib/util/search';
-import zhRegExp from '../../lib/zhRegExp';
 import { array_unique_overwrite } from 'array-hyper-unique';
 import sortUpdatedComp from 'build-json-cache/lib/util/sortUpdated';
 import { ICachedJSONRowPlus } from 'build-json-cache/lib/types';
-import imgUnsplash from '../../lib/util/img/unsplash';
-//import buildJsonCacheCacheTempTitles from 'build-json-cache/.cache/temp/titles.json';
+import { testRe, toRe} from '../../lib/novel/search';
+import { handleBuildJsonCacheList } from '../../lib/novel';
+import { importBuildJsonCache } from '../../lib/novel/loader';
 
 export const config = {
 	api: {
@@ -15,118 +14,7 @@ export const config = {
 	},
 };
 
-function toRe(input: string | string[], options: {
-	full?: boolean,
-	or?: boolean,
-} = {}): zhRegExp[]
-{
-	let arr = (Array.isArray(input) ? input : [input])
-		.filter(v => typeof v !== 'undefined')
-		.map(s =>
-		{
-			s = handleSearchInput(String(s));
-
-			if (s === '.*' || s === '' || !s.length)
-			{
-				return;
-			}
-
-			if (options.full)
-			{
-				s = `^${s}$`;
-			}
-
-			return s;
-		})
-		.filter(v => typeof v !== 'undefined' && v.length)
-	;
-
-	if (arr.length)
-	{
-		array_unique_overwrite(arr);
-
-		if (options.or)
-		{
-			return [new zhRegExp(arr.join('|'), 'ig')];
-		}
-
-		return arr.map(s => new zhRegExp(s, 'ig'))
-	}
-
-	return [] as zhRegExp[]
-}
-
-function testRe(rs: RegExp[], target: string | string[])
-{
-	if (rs.length === 0)
-	{
-		return true;
-	}
-
-	if (Array.isArray(target))
-	{
-		return target
-			.some(target => {
-				let bool = rs.some(r => r.test(target))
-
-				if (!bool)
-				{
-					let target2 = handleSearchInput(target)
-						.replace(/[\.*]+/g, '')
-					;
-
-					if (target2 !== target && target2.length)
-					{
-						bool = rs.some(r => r.test(target2))
-					}
-				}
-
-				return bool;
-			})
-	}
-
-	return rs.some(r => r.test(target))
-}
-
-function importBuildJsonCache<T>(type: 'titles' | 'build.all' | 'build.all.array'): Promise<T>
-{
-	let p: Promise<any>;
-	if (type === 'titles')
-	{
-		// @ts-ignore
-		//p = import('build-json-cache/.cache/temp/titles')
-		p = import('../../cache/temp/titles')
-	}
-	else if (type === 'build.all' || type === 'build.all.array')
-	{
-		// @ts-ignore
-		//p = import('build-json-cache/.cache/build.all')
-		p = import('../../cache/build.all')
-	}
-	/*
-	else if (type === 'build.all.array')
-	{
-		// @ts-ignore
-		//p = import('build-json-cache/.cache/build.all.array')
-		p = import('../../cache/build.all.array')
-	}
-	 */
-
-	return p
-		.then((list: any) => list.default || list)
-		.then((data) => {
-
-			if (type === 'build.all.array')
-			{
-				return Object.values(data)
-			}
-
-			return data
-		})
-	;
-}
-
-export default async (req: NextApiRequest, res: NextApiResponse) =>
+async function API_HANDLER(req: NextApiRequest, res: NextApiResponse)
 {
 	let query = {
 		...req.query,
@@ -286,9 +174,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 
 	if (data)
 	{
-		data
-			.sort(sortUpdatedComp)
-		;
+		data = handleBuildJsonCacheList(data);
 
 		if (req.method === 'GET')
 		{
@@ -313,6 +199,26 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 		.json({
 			error: true,
 			query,
+		})
+	;
+};
+
+export default (req: NextApiRequest, res: NextApiResponse, ...argv) => {
+	return Promise.resolve()
+		// @ts-ignore
+		.then(v => API_HANDLER(req, res, ...argv))
+		.catch(e => {
+			if (process.env.NODE_ENV === 'production') {
+				return res
+					.status(500)
+					.json({
+						error: true,
+						message: String(e),
+					})
+				;
+			}
+
+			return Promise.reject(e);
 		})
 	;
 }

@@ -30,6 +30,8 @@ import { useSwipeable } from "react-swipeable";
 import useEventListener from '@use-it/event-listener'
 import { EnumHandleClickType } from '../../components/novel/types';
 import { ITSRequireAtLeastOne } from 'ts-type'
+import { importBuildJsonCache } from '../../lib/novel/loader';
+import { handleBuildJsonCacheList } from '../../lib/novel';
 
 interface INoveIndexComponentType extends INovelListComponentType
 {
@@ -39,6 +41,7 @@ interface INoveIndexComponentType extends INovelListComponentType
 
 const Index = (prop?: INoveIndexComponentType) =>
 {
+	let [dataListFull, setDataListFull] = useState(prop.dataList || []);
 	let [dataList, setDataList] = useState([] as ICachedJSONRowPlus[]);
 	let [perPage, setPerPage] = useState(6);
 	let [page, setPage] = useState(prop.defaultPage | 0 || 1);
@@ -50,12 +53,12 @@ const Index = (prop?: INoveIndexComponentType) =>
 
 	const updatePage = (newPage: number) =>
 	{
-		let newCount = Math.ceil(prop.dataList.length / perPage);
+		let newCount = Math.ceil(dataListFull.length / perPage);
 		newPage = Math.max(1, Math.min(newCount, newPage));
 
 		let idx = (perPage * (newPage - 1));
 
-		let newDataList = prop.dataList.slice(idx, idx + perPage);
+		let newDataList = dataListFull.slice(idx, idx + perPage);
 
 		newDataList.forEach(item =>
 		{
@@ -127,6 +130,11 @@ const Index = (prop?: INoveIndexComponentType) =>
 
 			if (isAll)
 			{
+				if (prop.dataList?.length > dataListFull.length)
+				{
+					setDataListFull(prop.dataList);
+				}
+
 				return;
 			}
 			else
@@ -134,11 +142,22 @@ const Index = (prop?: INoveIndexComponentType) =>
 				let newDataList = await fetchNovelSearch({
 						all: 1,
 					})
+					.catch(e => {
+						if (prop.dataList?.length > 0)
+						{
+							return prop.dataList
+						}
+
+						return Promise.reject(e)
+					})
 				;
 
 				setIsAll(true);
-				prop.dataList.splice(0, prop.dataList.length);
-				prop.dataList.push(...newDataList);
+				//prop.dataList.splice(0, prop.dataList.length);
+				//prop.dataList.push(...newDataList);
+
+				setDataListFull(newDataList);
+
 				updatePage(1);
 				return;
 			}
@@ -170,8 +189,11 @@ const Index = (prop?: INoveIndexComponentType) =>
 			;
 
 			setIsAll(false);
-			prop.dataList.splice(0, prop.dataList.length);
-			prop.dataList.push(...newDataList);
+			//prop.dataList.splice(0, prop.dataList.length);
+			//prop.dataList.push(...newDataList);
+
+			setDataListFull(newDataList);
+
 			updatePage(1)
 		}
 	};
@@ -179,7 +201,7 @@ const Index = (prop?: INoveIndexComponentType) =>
 	useEffect(() =>
 	{
 		updatePage(page)
-	}, [perPage]);
+	}, [perPage, dataListFull]);
 
 	const handleClick = async (type: EnumHandleClickType, value, novel?: ICachedJSONRowPlus) =>
 	{
@@ -331,8 +353,9 @@ const Index = (prop?: INoveIndexComponentType) =>
 {
 	let ctx = getCTX(_ctx);
 
-	if (!ctx.req)
+	if (typeof window !== 'undefined' || !ctx.req)
 	{
+		console.log(`getInitialProps`);
 		return {};
 	}
 
@@ -371,9 +394,17 @@ const Index = (prop?: INoveIndexComponentType) =>
 	}
 	else
 	{
-		dataList = await fetchNovelSearch(body, {}, ctx)
-			.catch(e => [])
-		;
+		if (typeof window === 'undefined' && ctx)
+		{
+			dataList = await importBuildJsonCache<ICachedJSONRowPlus[]>('build.all.array')
+				.then(data => handleBuildJsonCacheList(data))
+		}
+		else
+		{
+			dataList = await fetchNovelSearch(body, {}, ctx)
+				.catch(e => [])
+			;
+		}
 
 		isAll = !!dataList.length;
 	}
