@@ -33,6 +33,7 @@ import { ITSRequireAtLeastOne } from 'ts-type'
 import { importBuildJsonCache } from '../../lib/novel/loader';
 import { handleBuildJsonCacheList } from '../../lib/novel';
 import { array_unique_overwrite } from 'array-hyper-unique';
+import debounce from 'lodash/debounce';
 
 interface INoveIndexComponentType extends INovelListComponentType
 {
@@ -93,21 +94,21 @@ const Index = (prop?: INoveIndexComponentType) =>
 	});
 
 	// @ts-ignore
-	useEventListener('keydown', ({ key }) =>
+	useEventListener('keydown', debounce(({ key }) =>
 	{
 
 		switch (key)
 		{
-			case 'ArrowRight':
+			//case 'ArrowRight':
 			case 'PageDown':
 				updatePage(page + 1);
 				break;
-			case 'ArrowLeft':
+			//case 'ArrowLeft':
 			case 'PageUp':
 				updatePage(page - 1);
 				break;
 		}
-	});
+	}, 500));
 
 	const changePage = (event, newPage: number) =>
 	{
@@ -555,7 +556,7 @@ const Index = (prop?: INoveIndexComponentType) =>
 
 	return {
 		defaultPage: (ctx?.query?.page as any) | 0 || 1,
-		dataList: [],
+		dataList,
 		isAll,
 	} as INoveIndexComponentType
 };
