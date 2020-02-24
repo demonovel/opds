@@ -5,6 +5,7 @@ import { ICachedJSONRowPlus } from 'build-json-cache/lib/types';
 import { testRe, toRe} from '../../lib/novel/search';
 import { handleBuildJsonCacheList } from '../../lib/novel';
 import { importBuildJsonCache } from '../../lib/novel/loader';
+import { PassThrough } from "stream";
 
 export const config = {
 	api: {
@@ -180,6 +181,12 @@ async function API_HANDLER(req: NextApiRequest, res: NextApiResponse)
 		{
 			res.setHeader('Cache-Control', `public, max-age=${3600 * 12}`);
 		}
+
+		let readStream = new PassThrough();
+		readStream.end(JSON.stringify(data));
+
+		res.setHeader('Content-Type', `application/json; charset=UTF-8`);
+		return readStream.pipe(res);
 
 		return res
 			.json(data)

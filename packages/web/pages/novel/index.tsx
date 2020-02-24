@@ -394,7 +394,7 @@ const Index = (prop?: INoveIndexComponentType) =>
 	}
 	else
 	{
-		if (typeof window === 'undefined' && ctx)
+		if (typeof window === 'undefined' && ctx && !ctx?.req?.headers?.['x-now-deployment-url'])
 		{
 			dataList = await importBuildJsonCache<ICachedJSONRowPlus[]>('build.all.array')
 				.then(data => handleBuildJsonCacheList(data))
