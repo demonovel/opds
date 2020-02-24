@@ -32,6 +32,7 @@ import { EnumHandleClickType } from '../../components/novel/types';
 import { ITSRequireAtLeastOne } from 'ts-type'
 import { importBuildJsonCache } from '../../lib/novel/loader';
 import { handleBuildJsonCacheList } from '../../lib/novel';
+import { array_unique_overwrite } from 'array-hyper-unique';
 
 interface INoveIndexComponentType extends INovelListComponentType
 {
@@ -115,12 +116,103 @@ const Index = (prop?: INoveIndexComponentType) =>
 
 	const searchRef = createRef<HTMLInputElement>();
 
+	const doSearchCore = async (options: {
+		reset?: boolean,
+		full?: boolean,
+		field?: ITSRequireAtLeastOne<Record<keyof ICachedJSONRowPlus, unknown>>
+	} = {}) =>
+	{
+		//console.log(searchRef.current);
+
+		if (options?.reset)
+		{
+			searchRef.current.value = '';
+
+			if (isAll)
+			{
+				if (prop.dataList?.length > dataListFull.length)
+				{
+					return {
+						isAll: true,
+						newDataList: prop.dataList,
+					}
+				}
+
+				return;
+			}
+			else
+			{
+				let newDataList = await fetchNovelSearch({
+						all: 1,
+					})
+					.catch(e => {
+						if (prop.dataList?.length > 0)
+						{
+							return prop.dataList
+						}
+
+						return Promise.reject(e)
+					})
+				;
+
+				return {
+					isAll: true,
+					newDataList,
+				}
+
+				return;
+			}
+		}
+
+		let body: Record<string, any>;
+
+		let { full = fullMathSearch } = options;
+
+		if (options.field)
+		{
+			body = {
+				...options.field,
+				full,
+			}
+		}
+		else if (searchRef.current.value)
+		{
+			body = {
+				[searchType]: searchRef.current.value,
+				full,
+			}
+		}
+
+		if (body)
+		{
+			let newDataList = await fetchNovelSearch(body)
+				.catch(e => [])
+			;
+
+			return {
+				isAll: false,
+				newDataList,
+			}
+		}
+	};
+
 	const doSearch = async (options: {
 		reset?: boolean,
 		full?: boolean,
 		field?: ITSRequireAtLeastOne<Record<keyof ICachedJSONRowPlus, unknown>>
 	} = {}) =>
 	{
+		return doSearchCore(options)
+			.then(data => {
+
+				if (data)
+				{
+					setIsAll(data.isAll);
+					setDataListFull(data.newDataList);
+					updatePage(1);
+				}
+			})
+		;
 
 		//console.log(searchRef.current);
 
@@ -200,7 +292,59 @@ const Index = (prop?: INoveIndexComponentType) =>
 
 	useEffect(() =>
 	{
-		updatePage(page)
+
+		if (!dataListFull?.length && !prop.dataList?.length)
+		{
+			Promise.all([
+					doSearchCore({
+						field: {
+							siteID: 'dmzj',
+						},
+					}),
+					doSearchCore({
+						field: {
+							siteID: 'esjzone',
+						},
+					}),
+					doSearchCore({
+						field: {
+							siteID: 'demonovel',
+						},
+					}),
+					doSearchCore({
+						field: {
+							siteID: 'masiro',
+						},
+					}),
+					doSearchCore({
+						field: {
+							siteID: 'wenku8',
+						},
+					}),
+				])
+				.then(async (value) => {
+
+					let dataListFull = [];
+
+					value.forEach(data => {
+						dataListFull.push(...data.newDataList)
+					});
+
+					dataListFull = await handleBuildJsonCacheList(dataListFull);
+
+					prop.dataList.splice(0, prop.dataList.length);
+					prop.dataList.push(...dataListFull);
+
+					setDataListFull(dataListFull)
+				})
+				.then(v => updatePage(page))
+			;
+		}
+		else
+		{
+			updatePage(page)
+		}
+
 	}, [perPage, dataListFull]);
 
 	const handleClick = async (type: EnumHandleClickType, value, novel?: ICachedJSONRowPlus) =>
@@ -411,7 +555,7 @@ const Index = (prop?: INoveIndexComponentType) =>
 
 	return {
 		defaultPage: (ctx?.query?.page as any) | 0 || 1,
-		dataList,
+		dataList: [],
 		isAll,
 	} as INoveIndexComponentType
 };
