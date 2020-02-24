@@ -26,7 +26,7 @@ function toRe(input: string | string[], options: {
 		{
 			s = handleSearchInput(String(s));
 
-			if (s === '.*' || s === '')
+			if (s === '.*' || s === '' || !s.length)
 			{
 				return;
 			}
@@ -66,7 +66,23 @@ function testRe(rs: RegExp[], target: string | string[])
 	if (Array.isArray(target))
 	{
 		return target
-			.some(target => rs.some(r => r.test(target)))
+			.some(target => {
+				let bool = rs.some(r => r.test(target))
+
+				if (!bool)
+				{
+					let target2 = handleSearchInput(target)
+						.replace(/[\.*]+/g, '')
+					;
+
+					if (target2 !== target && target2.length)
+					{
+						bool = rs.some(r => r.test(target2))
+					}
+				}
+
+				return bool;
+			})
 	}
 
 	return rs.some(r => r.test(target))
@@ -118,10 +134,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 	};
 
 	let {
-		title,
+		title = query.titles,
 	} = query;
 
 	let data: ICachedJSONRowPlus[];
+
+	console.log({
+		title
+	});
 
 	if (title && title.length)
 	{
@@ -135,10 +155,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 
 				let ids: string[] = [];
 
+				if (!rs.length)
+				{
+					return [] as ICachedJSONRowPlus[];
+				}
+
 				list
 					.filter(([title, ls]) =>
 					{
-						let bool = rs.some(r => r.test(title));
+						let bool = testRe(rs, title);
 
 						if (bool)
 						{
@@ -163,10 +188,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) =>
 	};
 
 	delete q2.title;
+	delete q2.titles;
 	delete q2.full;
 	delete q2.all;
 
-	let q3 = {};
+	let q3 = {} as Record<keyof ICachedJSONRowPlus, RegExp[]>;
 
 	let bool = query.all || Object.entries(q2)
 		.map(([k, v]) => {

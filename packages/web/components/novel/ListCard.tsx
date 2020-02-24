@@ -35,6 +35,8 @@ import imgUnsplash from '../../lib/util/img/unsplash';
 import { Chip } from '@material-ui/core';
 import green from '@material-ui/core/colors/green';
 import { EnumHandleClickType } from './types';
+import Tooltip from '@material-ui/core/Tooltip';
+import LinkBreak from 'jsx-linebreak/react';
 
 export interface INovelListComponentType
 {
@@ -54,10 +56,30 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 		},
 	},
 
+	box: {
+		alignItems: "center",
+		justifyContent: "center",
+		overflow: 'hidden',
+		resize: 'both',
+	},
+
+	tagBox: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		zIndex: 500,
+	},
+
 	cover: {
 		'&:hover': {
 			opacity: 0.5,
 		},
+		objectFit: 'cover',
+		width: '100%',
+		height: '100%',
+//		'&[src*="unsplash"]': {
+//			objectFit: 'cover',
+//		},
 	},
 
 }));
@@ -88,14 +110,11 @@ export const ListCard = withWidth()((prop: INovelListComponentType) =>
 					onClick={(event) => handleClick(event, EnumHandleClickType.novel, novel.uuid, novel)}
 				>
 
-					<div>
+					<div
+						className={classes.box}
+					>
 						<div
-							style={{
-								position: 'absolute',
-								top: 0,
-								left: 0,
-								zIndex: 10000,
-							}}
+							className={classes.tagBox}
 						>
 							<Chip
 								size="small"
@@ -129,6 +148,13 @@ export const ListCard = withWidth()((prop: INovelListComponentType) =>
 							})()}
 						</div>
 
+						<Tooltip
+							placement={"right"}
+							title={<>
+								<Typography>
+									<LinkBreak>{(novel.content ? novel.content : '')}</LinkBreak>
+								</Typography>
+							</>}>
 						<img
 							className={classes.cover}
 							src={novel.cover}
@@ -144,8 +170,16 @@ export const ListCard = withWidth()((prop: INovelListComponentType) =>
 								}
 							}}
 						/>
+						</Tooltip>
 					</div>
 
+					<Tooltip
+						placement="top"
+						title={<>
+					<Typography>
+						<LinkBreak>{(novel?.titles?.length ? novel.titles.join('\n') : novel.title)}</LinkBreak>
+					</Typography>
+					</>}>
 					<GridListTileBar
 						title={novel.title}
 						subtitle={novel.updated ? moment.unix(novel.updated).format() : ''}
@@ -158,7 +192,10 @@ export const ListCard = withWidth()((prop: INovelListComponentType) =>
 								<FavoriteIcon />
 							</IconButton>
 						}
+						// @ts-ignore
+						onClick={(event) => handleClick(event, EnumHandleClickType.title_full, novel.titles || novel.title, novel)}
 					/>
+					</Tooltip>
 				</GridListTile>)
 			})}
 		</GridList>

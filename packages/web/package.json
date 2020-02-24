@@ -37,6 +37,7 @@
     "@zeit/next-sass": "^1.0.1",
     "build-json-cache": "1",
     "isomorphic-unfetch": "^3.0.0",
+    "jsx-linebreak": "^1.0.2",
     "material-ui-theme-state": "^1.0.9",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.28",
@@ -49,6 +50,7 @@
     "react-swipeable": "^5.5.1",
     "react-use-gesture": "^7.0.4",
     "react-xml": "^0.3.0",
+    "ts-type": "^1.2.13",
     "typescript": "^3.9.0-dev.20200221",
     "webpack-workspaces-support": "^1.0.5"
   },

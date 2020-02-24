@@ -1,4 +1,4 @@
-export function imgUnsplash(item?: number | string, width: number = 300, height: number = 200)
+export function imgUnsplash(item?: number | string, width: number = 300, height: number = 300)
 {
 	if (!item)
 	{

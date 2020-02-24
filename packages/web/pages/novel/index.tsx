@@ -1,75 +1,27 @@
 /**
  * Created by user on 2020/2/23.
  */
-import { Router } from 'next/router';
+//import { MemoryRouter as Router } from 'react-router';
 //import Pagination from '@material-ui/lab/Pagination';
 //import PaginationItem from '@material-ui/lab/PaginationItem';
-import Link3 from 'next/link';
-import { Link as Link2 } from 'react-router-dom';
-import Link from '../../components/router/Link';
-//import { MemoryRouter as Router } from 'react-router';
-import { withRouter } from 'next/router'
-import PaginationItem from '../../components/router/PaginationItem';
 import Pagination from '../../components/router/Pagination';
 import { Typography } from '@material-ui/core';
 import React, { useState, useEffect, createRef } from 'react';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import clsx from 'clsx';
-import Collapse from '@material-ui/core/Collapse';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { red } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { ICachedJSONRowPlus } from 'build-json-cache/lib/types';
-import moment from 'moment-timezone';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import GridListTile from '@material-ui/core/GridListTile';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import GridList from '@material-ui/core/GridList';
-import InfoIcon from '@material-ui/icons/Info';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
-import Container from '@material-ui/core/Container';
-import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
-import getGridListCols from '../../components/grid/getGridListCols';
 import ListCard, { INovelListComponentType } from '../../components/novel/ListCard';
 import { NextComponentType } from 'next';
 import getCTX from '../../lib/util/nextjs/getCTX';
-import { fetchApi } from '../../lib/util/fetch';
 import imgUnsplash from '../../lib/util/img/unsplash';
-import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-import { fade } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import Select from '@material-ui/core/Select';
-import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import AppBarWithDrawer from '../../components/layout/AppBarWithDrawer';
 import SearchBar from '../../components/SearchBar';
 import fetchNovelSearch from '../../lib/util/fetch/fetchNovelSearch';
@@ -77,6 +29,7 @@ import DialogSelect from '../../components/novel/DialogSelect';
 import { useSwipeable } from "react-swipeable";
 import useEventListener from '@use-it/event-listener'
 import { EnumHandleClickType } from '../../components/novel/types';
+import { ITSRequireAtLeastOne } from 'ts-type'
 
 interface INoveIndexComponentType extends INovelListComponentType
 {
@@ -159,12 +112,11 @@ const Index = (prop?: INoveIndexComponentType) =>
 
 	const searchRef = createRef<HTMLInputElement>();
 
-	const doSearch = async (options?: {
+	const doSearch = async (options: {
 		reset?: boolean,
-		field?: {
-			[k in keyof ICachedJSONRowPlus]: unknown
-		}
-	}) =>
+		full?: boolean,
+		field?: ITSRequireAtLeastOne<Record<keyof ICachedJSONRowPlus, unknown>>
+	} = {}) =>
 	{
 
 		//console.log(searchRef.current);
@@ -194,18 +146,20 @@ const Index = (prop?: INoveIndexComponentType) =>
 
 		let body: Record<string, any>;
 
+		let { full = fullMathSearch } = options;
+
 		if (options.field)
 		{
 			body = {
 				...options.field,
-				full: fullMathSearch,
+				full,
 			}
 		}
 		else if (searchRef.current.value)
 		{
 			body = {
 				[searchType]: searchRef.current.value,
-				full: fullMathSearch,
+				full,
 			}
 		}
 
@@ -235,13 +189,29 @@ const Index = (prop?: INoveIndexComponentType) =>
 			value,
 			siteID: novel.siteID,
 			title: novel.title,
-		})
+		});
+
+		let full: boolean;
 
 		switch (type)
 		{
 			case EnumHandleClickType.Favorite:
 			case EnumHandleClickType.novel:
 			case EnumHandleClickType.unknown:
+				break;
+			case EnumHandleClickType.title_full:
+				full = true;
+				type = EnumHandleClickType.title;
+			case EnumHandleClickType.title:
+				if (novel && type in novel)
+				{
+					await doSearch({
+						field: {
+							[type]: value,
+						},
+						full,
+					})
+				}
 				break;
 			default:
 				if (novel && type in novel)

@@ -10,4 +10,6 @@ export enum EnumHandleClickType
 	'authors' = 'authors',
 	'pathMain' = 'pathMain',
 	'Favorite' = 'Favorite',
+	'title' = 'title',
+	'title_full' = 'title_full',
 }
