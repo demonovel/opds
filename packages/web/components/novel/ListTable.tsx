@@ -42,7 +42,7 @@ import ListTableIcons from '../icons/ListTableIcons';
 import useTheme from '@material-ui/core/styles/useTheme';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
-import { epubLink, novelLink } from '../../lib/novel/util';
+import { epubLink, novelLink, ipfsLink } from '../../lib/novel/util';
 import Link from '@material-ui/core/Link';
 import domOpenLink from '../../lib/dom/domOpenLink';
 
@@ -204,6 +204,8 @@ export const ListTable = withWidth()((prop: INovelListTableComponentType) =>
 
 				let href =  novelLink(novel, prop.novelOpdsNowServer);
 
+				let ipfs =  ipfsLink(novel, prop.novelOpdsNowServer);
+
 				return (<Box
 					component="div"
 					p={1}
@@ -230,6 +232,16 @@ export const ListTable = withWidth()((prop: INovelListTableComponentType) =>
 						className={classes.linkButton}
 					>
 						LINK
+					</Button> : undefined}
+
+					{ipfs ? <Button
+						href={ipfs}
+						size={'small'}
+						variant="contained"
+						target={"_blank"}
+						className={classes.linkButton}
+					>
+						IPFS
 					</Button> : undefined}
 
 					</Box>)

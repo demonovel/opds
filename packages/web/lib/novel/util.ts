@@ -3,6 +3,9 @@
  */
 import { ICachedJSONRowPlus } from 'build-json-cache/lib/types';
 import { EnumSiteID } from '../../components/novel/types';
+import hashSum from 'hash-sum';
+
+const serverIPFSRecord = `https://calm-inlet-73656.herokuapp.com`;
 
 export function epubLink(novel: ICachedJSONRowPlus, server?: string)
 {
@@ -47,5 +50,16 @@ export function novelLink(novel: ICachedJSONRowPlus, server?: string)
 				novel.pathMain_real,
 				novel.novelID,
 			].join('/'), rawUrl).href
+	}
+}
+
+export function ipfsLink(novel: ICachedJSONRowPlus, server?: string)
+{
+	switch (novel.siteID)
+	{
+		case EnumSiteID.esjzone:
+		case EnumSiteID.wenku8:
+		case EnumSiteID.dmzj:
+			return new URL(`file/${novel.siteID}/${hashSum(novel.id)}`, serverIPFSRecord).href
 	}
 }
