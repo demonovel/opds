@@ -4,10 +4,11 @@
 
 import { join } from "path";
 import { __rootCache } from '../__rootCache';
+import { EnumSiteID } from 'demonovel/components/novel/types';
 
 export interface ICachedJSONRow
 {
-	siteID: string;
+	siteID: string | EnumSiteID;
 	novelID: string;
 	uuid: string;
 	id: string;
@@ -25,7 +26,9 @@ export interface ICachedJSONRow
 export interface ICachedJSONRowPlus extends ICachedJSONRow
 {
 	pathMain: string;
+	pathMain_real: string;
 	titles: string[];
+	epub_basename: string;
 }
 
 export const pathPrefix = {

@@ -79,6 +79,9 @@ export function update()
 						//last_update_name,
 						tags: info.tags(),
 						content,
+
+						epub_basename: novel.cache.epub_basename,
+						pathMain_real: novel.pathMain,
 					};
 
 					return item

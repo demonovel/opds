@@ -39,6 +39,7 @@
     "isomorphic-unfetch": "^3.0.0",
     "jsx-linebreak": "^1.0.2",
     "lodash": "^4.17.15",
+    "material-table": "^1.57.2",
     "material-ui-theme-state": "^1.0.9",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.28",

@@ -1,49 +1,20 @@
 import React, { SyntheticEvent } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import GridList from '@material-ui/core/GridList';
 import getGridListCols from '../grid/getGridListCols';
 import GridListTile from '@material-ui/core/GridListTile';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import moment from 'moment-timezone';
 import Container from '@material-ui/core/Container';
-import { ICachedJSONRowPlus } from 'build-json-cache/lib/types';
 import withWidth from '@material-ui/core/withWidth';
-import fetch from 'isomorphic-unfetch';
-import { NextComponentType } from 'next';
-import { NextPageContext } from 'next/dist/next-server/lib/utils';
-import getCTX from '../../lib/util/nextjs/getCTX';
-import { fetchApi } from '../../lib/util/fetch';
-import { URLSearchParams } from 'url';
-import ImgWithFallback from '../img/ImgWithFallback';
 import imgUnsplash from '../../lib/util/img/unsplash';
 import { Chip } from '@material-ui/core';
-import green from '@material-ui/core/colors/green';
-import { EnumHandleClickType } from './types';
+import { EnumHandleClickType, INovelListComponentType } from './types';
 import Tooltip from '@material-ui/core/Tooltip';
 import LinkBreak from 'jsx-linebreak/react';
-
-export interface INovelListComponentType
-{
-	dataList: ICachedJSONRowPlus[];
-
-	handleClick?(type: string, value, novel?: ICachedJSONRowPlus),
-}
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
 
