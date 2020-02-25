@@ -54,6 +54,15 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 //		},
 	},
 
+	Tooltip: {
+		maxHeight: 500,
+		overflow: 'hidden',
+		'& $popper': {
+			maxHeight: 500,
+			overflow: 'hidden',
+		}
+	}
+
 }));
 
 export const ListCard = withWidth()((prop: INovelListComponentType) =>
@@ -121,7 +130,12 @@ export const ListCard = withWidth()((prop: INovelListComponentType) =>
 						</div>
 
 						<Tooltip
-							placement={"right"}
+							className={classes.Tooltip}
+							PopperProps={{
+								// @ts-ignore
+								className: classes.Tooltip
+							}}
+							placement={"right-start"}
 							title={<>
 								<Typography>
 									<LinkBreak>{(novel.content ? novel.content : '無簡介')}</LinkBreak>

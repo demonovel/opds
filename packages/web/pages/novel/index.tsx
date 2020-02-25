@@ -34,6 +34,7 @@ import ListTable from '../../components/novel/ListTable';
 import Avatar from '@material-ui/core/Avatar';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSiteID from '../../components/novel/ListItemSiteID';
+import useLocalStorage from '@site/storage';
 
 interface INoveIndexComponentType extends INovelListComponentType
 {
@@ -45,17 +46,17 @@ const Index = (prop?: INoveIndexComponentType) =>
 {
 	let [dataListFull, setDataListFull] = useState(prop.dataList || []);
 	let [dataList, setDataList] = useState([] as ICachedJSONRowPlus[]);
-	let [perPage, setPerPage] = useState(8);
+	let [perPage, setPerPage] = useLocalStorage('novelPerPage', 8);
 	let [page, setPage] = useState(prop.defaultPage | 0 || 1);
 	let [count, setCount] = useState(1);
 	let [searchType, changeSearchType] = useState('title');
 	let [isAll, setIsAll] = useState(prop.isAll);
 
-	let [novelOpdsNowServer, setNovelOpdsNowServer] = useState("http://127.0.0.1:3000");
+	let [novelOpdsNowServer, setNovelOpdsNowServer] = useLocalStorage('novelOpdsNowServer', "http://127.0.0.1:3000");
 
 	let [fullMathSearch, changeFullMathSearch] = useState(false);
 
-	let [displayMode, setDisplayMode] = useState(0);
+	let [displayMode, setDisplayMode] = useLocalStorage('novelDisplayMode', 0);
 
 	const updatePage = (newPage: number) =>
 	{
