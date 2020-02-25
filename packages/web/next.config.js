@@ -2,6 +2,8 @@ const withWorkspacesSupport = require('webpack-workspaces-support/nextjs');
 const withSass = require('@zeit/next-sass');
 const withFonts = require('next-fonts');
 
+console.dir(process.env);
+
 function chain(ls, nextConfig)
 {
 	return ls.reduce((nextConfig, fn) =>
