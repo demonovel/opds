@@ -94,7 +94,7 @@ export const ListTable = withWidth()((prop: INovelListTableComponentType) =>
 				showTitle: false,
 				pageSize: prop.pageSize,
 
-				pageSizeOptions: [8, 5, 10, 20, 4, 9, 15, 25, 30, 34, 36],
+				pageSizeOptions: [8, 5, 10, 20, 4, 9, 15, 25, 30, 34, 36, 50, 100],
 				//paginationType: 'stepped',
 				search: false,
 				padding: 'dense',
