@@ -4,7 +4,7 @@ import { ICachedJSONRowPlus } from 'build-json-cache/lib/types';
 
 export default async (body, init?: RequestInit, ctx?: NextPageContext) => {
 
-	console.dir(body)
+	console.dir(body);
 
 	if (body && typeof body !== 'string')
 	{
@@ -20,11 +20,18 @@ export default async (body, init?: RequestInit, ctx?: NextPageContext) => {
 				}
 				else
 				{
+					if (typeof body[key] === 'boolean')
+					{
+						body[key] = body[key] ? 1 : 0;
+					}
+
 					p.append(key, body[key])
 				}
 			}
 
 			body = p;
+
+			//console.log(body);
 		}
 
 		//body = JSON.stringify(body)

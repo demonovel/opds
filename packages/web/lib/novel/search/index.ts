@@ -61,6 +61,8 @@ export function testRe(rs: RegExp[], target: string | string[])
 			{
 				let bool = rs.some(r => r.test(target))
 
+				target.includes('狼') && console.log(bool, rs, target)
+
 				if (!bool)
 				{
 					let target2 = handleSearchInput(target)

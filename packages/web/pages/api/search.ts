@@ -10,7 +10,7 @@ import { PassThrough } from "stream";
 export const config = {
 	api: {
 		bodyParser: {
-			sizeLimit: '10mb',
+			sizeLimit: '1mb',
 		},
 	},
 };
@@ -26,10 +26,20 @@ async function API_HANDLER(req: NextApiRequest, res: NextApiResponse)
 		title = query.titles,
 	} = query;
 
+	if (query.all === 'false' || query.all === '0')
+	{
+		query.all = false;
+	}
+	if (query.full === 'false' || query.full === '0')
+	{
+		query.full = false;
+	}
+
 	let data: ICachedJSONRowPlus[];
 
 	console.log({
-		title
+		title,
+		query,
 	});
 
 	if (title && title.length)
@@ -41,6 +51,8 @@ async function API_HANDLER(req: NextApiRequest, res: NextApiResponse)
 					or: true,
 					full: query.full,
 				});
+
+				console.log(rs)
 
 				let ids: string[] = [];
 
