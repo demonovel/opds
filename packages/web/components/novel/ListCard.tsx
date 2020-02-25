@@ -15,6 +15,7 @@ import { Chip } from '@material-ui/core';
 import { EnumHandleClickType, INovelListComponentType } from './types';
 import Tooltip from '@material-ui/core/Tooltip';
 import LinkBreak from 'jsx-linebreak/react';
+import { novelLink } from '../../lib/novel/util';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
 
@@ -138,6 +139,14 @@ export const ListCard = withWidth()((prop: INovelListComponentType) =>
 									e.target.onerror = null;
 									// @ts-ignore
 									e.target.src = imgUnsplash();
+								}
+							}}
+							onClick={() => {
+								let href =  novelLink(novel, prop.novelOpdsNowServer);
+
+								if (href)
+								{
+									window.open(href, href);
 								}
 							}}
 						/>
