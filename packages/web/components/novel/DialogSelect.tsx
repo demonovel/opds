@@ -168,7 +168,12 @@ export default (prop: PropsWithChildren<{
 									<TextField label="novel-opds-now server" placeholder={"http://127.0.0.1:3000"}
 														 defaultValue={prop.novelOpdsNowServer}
 														 onChange={(event => prop.setNovelOpdsNowServer(event.target.value))} />
-									<IconButton color="primary" aria-label="novel-opds-now server">
+									<IconButton
+										color="primary"
+										aria-label="novel-opds-now server"
+										href={"https://www.npmjs.com/package/novel-opds-now"}
+										target={"_blank"}
+									>
 										<LiveHelpIcon />
 									</IconButton>
 								</Grid>

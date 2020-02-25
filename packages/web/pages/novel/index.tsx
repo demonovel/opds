@@ -90,15 +90,12 @@ const Index = (prop?: INoveIndexComponentType) =>
 		return newDataList
 	};
 
-	/*
 	const handlers = useSwipeable({
 		onSwipedLeft: () => updatePage(page + 1),
 		onSwipedRight: () => updatePage(page - 1),
 		preventDefaultTouchmoveEvent: true,
 		trackMouse: true,
 	});
-
-	 */
 
 	// @ts-ignore
 	useEventListener('keydown', debounce(({ key }) =>
@@ -509,7 +506,7 @@ const Index = (prop?: INoveIndexComponentType) =>
 				pageSize={perPage}
 				onChangeRowsPerPage={setPerPage}
 				novelOpdsNowServer={novelOpdsNowServer}
-			/> : (<>
+			/> : (<div {...handlers}>
 
 				<Box display="flex" justifyContent="center" m={1} p={1}>
 					<Pagination
@@ -550,7 +547,7 @@ const Index = (prop?: INoveIndexComponentType) =>
 					/>
 
 				</Box>
-			</>)}
+			</div>)}
 
 		</div>
 	</AppBarWithDrawer>)
