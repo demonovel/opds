@@ -34,7 +34,8 @@ import ListTable from '../../components/novel/ListTable';
 import Avatar from '@material-ui/core/Avatar';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSiteID from '../../components/novel/ListItemSiteID';
-import useLocalStorage from '@site/storage';
+import { useStorage } from 'react-use-localstorage2';
+import Container from '@material-ui/core/Container';
 
 interface INoveIndexComponentType extends INovelListComponentType
 {
@@ -46,17 +47,17 @@ const Index = (prop?: INoveIndexComponentType) =>
 {
 	let [dataListFull, setDataListFull] = useState(prop.dataList || []);
 	let [dataList, setDataList] = useState([] as ICachedJSONRowPlus[]);
-	let [perPage, setPerPage] = useLocalStorage('novelPerPage', 8);
+	let [perPage, setPerPage] = useStorage('novelPerPage', 8);
 	let [page, setPage] = useState(prop.defaultPage | 0 || 1);
 	let [count, setCount] = useState(1);
 	let [searchType, changeSearchType] = useState('title');
 	let [isAll, setIsAll] = useState(prop.isAll);
 
-	let [novelOpdsNowServer, setNovelOpdsNowServer] = useLocalStorage('novelOpdsNowServer', "http://127.0.0.1:3000");
+	let [novelOpdsNowServer, setNovelOpdsNowServer] = useStorage('novelOpdsNowServer', "http://127.0.0.1:3000");
 
 	let [fullMathSearch, changeFullMathSearch] = useState(false);
 
-	let [displayMode, setDisplayMode] = useLocalStorage('novelDisplayMode', 0);
+	let [displayMode, setDisplayMode] = useStorage('novelDisplayMode', 0);
 
 	const updatePage = (newPage: number) =>
 	{
@@ -507,7 +508,7 @@ const Index = (prop?: INoveIndexComponentType) =>
 				pageSize={perPage}
 				onChangeRowsPerPage={setPerPage}
 				novelOpdsNowServer={novelOpdsNowServer}
-			/> : (<div {...handlers}>
+			/> : (<Container {...handlers}>
 
 				<Box display="flex" justifyContent="center" m={1} p={1}>
 					<Pagination
@@ -548,7 +549,7 @@ const Index = (prop?: INoveIndexComponentType) =>
 					/>
 
 				</Box>
-			</div>)}
+			</Container>)}
 
 		</Box>
 	</AppBarWithDrawer>)

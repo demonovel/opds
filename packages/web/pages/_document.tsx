@@ -1,7 +1,10 @@
 import React, { PropsWithChildren, ReactNode } from 'react';
 import Document, { Head, Main, NextScript, Html } from 'next/document'
 import { ServerStyleSheets, ThemeProvider, MuiThemeProvider } from '@material-ui/core/styles';
-import { useTheme, createTheme } from 'material-ui-theme-state/lib/global';
+import { prefersLightMode } from '../components/PrefersLightMode';
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+import blue from '@material-ui/core/colors/blue';
+import purple from '@material-ui/core/colors/purple';
 
 export default class MyDocument extends Document
 {
@@ -14,13 +17,16 @@ export default class MyDocument extends Document
 			...ctx,
 			renderPage()
 			{
+
 				const page = ctx.renderPage(App => props => {
 
-					const { theme, setTheme } = useTheme();
-
-					const muiTheme = createTheme(theme, {
-						setTheme,
-					}).theme;
+					const muiTheme = createMuiTheme({
+						palette: {
+							type: prefersLightMode() ? 'light' : 'dark',
+							primary: blue,
+							secondary: purple,
+						},
+					});
 
 					return sheet.collect(<MuiThemeProvider theme={muiTheme}>
 						<App {...props} />
@@ -34,8 +40,8 @@ export default class MyDocument extends Document
 		return {
 			...initialProps,
 			styles: (<>
-				{initialProps.styles}
 				{sheet.getStyleElement()}
+				{initialProps.styles}
 			</>),
 		}
 	}
