@@ -20,12 +20,12 @@ import { novelLink } from '../../lib/novel/util';
 const useStyles = makeStyles((theme: Theme) => createStyles({
 
 	root: {
-		'&:hover $cover': {
-			opacity: 0.5,
-		},
-		'& $cover': {
-			opacity: 1,
-		},
+//		'&:hover $cover': {
+//			opacity: 0.5,
+//		},
+//		'& $cover': {
+//			opacity: 1,
+//		},
 	},
 
 	box: {
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 		position: 'absolute',
 		top: 0,
 		left: 0,
-		zIndex: 500,
+		zIndex: 1,
 	},
 
 	cover: {
@@ -54,13 +54,18 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 //		},
 	},
 
-	Tooltip: {
+	tipRoot: {
+		zIndex: theme.zIndex.tooltip,
+	},
+
+	tip: {
 		maxHeight: 500,
 		overflow: 'hidden',
-		'& $popper': {
-			maxHeight: 500,
-			overflow: 'hidden',
-		}
+		zIndex: theme.zIndex.tooltip,
+//		'& $popper': {
+//			maxHeight: 500,
+//			overflow: 'hidden',
+//		}
 	}
 
 }));
@@ -130,10 +135,9 @@ export const ListCard = withWidth()((prop: INovelListComponentType) =>
 						</div>
 
 						<Tooltip
-							className={classes.Tooltip}
 							PopperProps={{
 								// @ts-ignore
-								className: classes.Tooltip
+								className: classes.tip
 							}}
 							placement={"right-start"}
 							title={<>

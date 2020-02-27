@@ -29,11 +29,7 @@ module.exports = chain([
 	withWorkspacesSupport,
 
 ], {
-	assetPrefix: '.',
-
-	api: {
-		bodyParser: true
-	},
+	//assetPrefix: '.',
 
 	typescript: {
 		// !! WARN !!

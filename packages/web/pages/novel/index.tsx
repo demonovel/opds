@@ -499,7 +499,7 @@ const Index = (prop?: INoveIndexComponentType) =>
 		}}
 
 	>
-		<div>
+		<Box display="flex" justifyContent="center">
 
 			{displayMode === 1 ? <ListTable
 				dataList={dataListFull}
@@ -550,7 +550,7 @@ const Index = (prop?: INoveIndexComponentType) =>
 				</Box>
 			</div>)}
 
-		</div>
+		</Box>
 	</AppBarWithDrawer>)
 };
 

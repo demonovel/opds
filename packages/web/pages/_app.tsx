@@ -3,6 +3,8 @@ import App, { Container } from 'next/app';
 import PrefersLightMode from '../components/PrefersLightMode';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import '../assets/styles/style.scss'
+import ScopedCssBaseline from '@material-ui/core/ScopedCssBaseline';
+import { ServerStyleSheets, ThemeProvider } from '@material-ui/core/styles';
 
 export default class MyApp extends App
 {
