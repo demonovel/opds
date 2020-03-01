@@ -3,6 +3,7 @@ import { outputJSON, readJSON } from 'fs-extra';
 import { join } from "path";
 import { pathPrefix } from '../types';
 import { stat } from 'fs-extra';
+import { readJSONWithFetch } from '../util/fs';
 
 let url = `https://gitlab.com/novel-group/txt-source/raw/master/novel-stat.json`;
 const siteID = 'demonovel';
@@ -25,11 +26,7 @@ export function fetch()
 		;
 }
 
-export async function fetchFile()
+export function fetchFile()
 {
-	await fetch().catch(e => null);
-
-	return readJSON(join(pathPrefix.cache, `./${siteID}.json`))
-		.catch(e => fetch())
-		;
+	return readJSONWithFetch(join(pathPrefix.cache, `./${siteID}.json`), fetch)
 }

@@ -12,6 +12,7 @@ import { inspect } from "util";
 import { trim, newUUID } from '../util';
 import { ICachedJSONRow, pathPrefix } from '../types';
 import { __rootCache } from '../../__rootCache';
+import { readJSONWithFetch } from '../util/fs';
 
 export const id_packs_map = {
 	dmzj: 'cached-dmzj/data/novel/info.pack.json',
@@ -47,13 +48,9 @@ export function fetch<K extends keyof typeof id_packs_map>(siteID: K): Promise<R
 		;
 }
 
-export async function fetchFile<K extends keyof typeof id_packs_map>(siteID: K): Promise<Record<string, Interface[K]>>
+export function fetchFile<K extends keyof typeof id_packs_map>(siteID: K): Promise<Record<string, Interface[K]>>
 {
-	await fetch(siteID).catch(e => null);
-
-	return readJSON(join(pathPrefix.cache, `./${siteID}.json`))
-		.catch(e => fetch(siteID))
-		;
+	return readJSONWithFetch(join(pathPrefix.cache, `./${siteID}.json`), () => fetch(siteID))
 }
 
 export function update<K extends keyof typeof id_packs_map>(siteID: K | string)
