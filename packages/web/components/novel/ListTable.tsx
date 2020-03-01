@@ -218,11 +218,6 @@ export const ListTable = withWidth()((prop: INovelListTableComponentType) =>
 						color={'secondary'}
 						target={"_blank"}
 						className={classes.linkButton}
-						onClick={(event) => ipfs && fetch(ipfs, {
-							cache: 'default',
-							// @ts-ignore
-							timeout: 1000,
-						}).catch(() => null)}
 					>
 						EPUB
 					</Button> : undefined}
