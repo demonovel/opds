@@ -1,12 +1,4 @@
 # README.md
 
-    <description>
-
-## install
-
-```bash
-yarn add <name>
-yarn-tool add <name>
-yt add <name>
-```
+    https://opds.now.sh/novel
 
