@@ -5,7 +5,7 @@ import { ICachedJSONRowPlus } from 'build-json-cache/lib/types';
 import { EnumSiteID } from '../../components/novel/types';
 import hashSum from 'hash-sum';
 
-const serverIPFSRecord = `https://calm-inlet-73656.herokuapp.com`;
+const serverIPFSRecord = `https://api-file-server.now.sh`;
 
 export function epubLink(novel: ICachedJSONRowPlus, server?: string)
 {
