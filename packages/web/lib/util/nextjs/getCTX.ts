@@ -1,14 +1,3 @@
-import { NextPageContext } from 'next/dist/next-server/lib/utils';
+import getNextPageContext from '@lazy-react/get-next-ctx';
 
-export default (_ctx) => {
-	let ctx = (_ctx as any as NextPageContext);
-
-	// @ts-ignore
-	if (ctx.ctx)
-	{
-		// @ts-ignore
-		ctx = ctx.ctx;
-	}
-
-	return ctx
-};
+export default getNextPageContext

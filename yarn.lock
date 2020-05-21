@@ -1033,6 +1033,11 @@
   resolved "https://registry.npmjs.org/@jsdom-extra/virtual-console/-/virtual-console-1.0.1.tgz#1885b487b43bcf975eba40635d24de888ade0aea"
   integrity sha512-YtEhIV5Wz/hwlvRsKGhnBJe3V78fVLWXc/PpgOESQm2e87tY4DxN20TdiPLgk7ZgtjKOIx/0+lN31PxwBZAFyw==
 
+"@lazy-react/get-next-ctx@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/@lazy-react/get-next-ctx/-/get-next-ctx-1.0.1.tgz#339013dd5c85a4e8fbe07fd046f067f65e6d59ac"
+  integrity sha512-pJNqFaDsE4B4vdTvS0GfUfGfa6zqN+IVoEXAtpNwDijR5FV4R7cdeYiakc+ViD+kbK9C8Q1lVhNZe5YBWG6Adg==
+
 "@material-ui/core@^4.9.14":
   version "4.9.14"
   resolved "https://registry.npmjs.org/@material-ui/core/-/core-4.9.14.tgz#4388f82cf94554cd3a935774fc12820f3c607a8a"
@@ -3845,6 +3850,11 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
+forwarded-parse@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.npmjs.org/forwarded-parse/-/forwarded-parse-2.1.0.tgz#1ae9d7a4be3af884f74d936d856f7d8c6abd0439"
+  integrity sha512-as9a7Xelt0CvdUy7/qxrY73dZq2vMx49F556fwjjFrUyzq5uHHfeLgD2cCq/6P4ZvusGZzjD6aL2NdgGdS5Cew==
+
 fragment-cache@^0.2.1:
   version "0.2.1"
   resolved "https://registry.npmjs.org/fragment-cache/-/fragment-cache-0.2.1.tgz#4290fad27f13e89be7f33799c6bc5a0abfff0d19"
@@ -4385,6 +4395,11 @@ ip-regex@^2.1.0:
   resolved "https://registry.npmjs.org/ip-regex/-/ip-regex-2.1.0.tgz#fa78bf5d2e6913c911ce9f819ee5146bb6d844e9"
   integrity sha1-+ni/XS5pE8kRzp+BnuUUa7bYROk=
 
+ip-regex@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.npmjs.org/ip-regex/-/ip-regex-4.1.0.tgz#5ad62f685a14edb421abebc2fff8db94df67b455"
+  integrity sha512-pKnZpbgCTfH/1NLIlOduP/V+WRXzC2MOz3Qo8xmxk8C5GudJLgK5QyLVXOSWy3ParAH7Eemurl3xjv/WXYFvMA==
+
 is-absolute-url@^2.0.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/is-absolute-url/-/is-absolute-url-2.1.0.tgz#50530dfb84fcc9aa7dbe7852e83a37b93b9f2aa6"
@@ -4605,6 +4620,11 @@ is-regexp@^2.0.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/is-regexp/-/is-regexp-2.1.0.tgz#cd734a56864e23b956bf4e7c66c396a4c0b22c2d"
   integrity sha512-OZ4IlER3zmRIoB9AqNhEggVxqIH4ofDns5nRrPS6yQxXE1TPCUpFznBfRQmQa8uC+pXqjMnukiJBxCisIxiLGA==
+
+is-req-https2@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.npmjs.org/is-req-https2/-/is-req-https2-1.0.7.tgz#571fbb95158691a96e6c6ed6e2ef618d74556193"
+  integrity sha512-xPQFYskzEli7p05KYUEGLRLLYVDpXwB4T4xh3ORghNsW7OwtOeSBR7sgOqWK+TMyVWVJGI54/TnCSqnHYAhppw==
 
 is-resolvable@^1.0.0:
   version "1.1.0"
@@ -5863,6 +5883,14 @@ optionator@^0.8.1:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
     word-wrap "~1.2.3"
+
+original-url2@^1.2.10:
+  version "1.2.10"
+  resolved "https://registry.npmjs.org/original-url2/-/original-url2-1.2.10.tgz#879c556ca7bf3f6b4f7ac6b1cca5f671206f40c7"
+  integrity sha512-/uiwvVVY0Z+Lv3VJCQuigKwj4Kwe+4jW9ZxtOYZPXES5WaY3gGx2jCAZdVREwfc055Gd9wKmUKi+Wz35VDtaeA==
+  dependencies:
+    forwarded-parse "^2.1.0"
+    ip-regex "^4.1.0"
 
 os-browserify@^0.3.0:
   version "0.3.0"

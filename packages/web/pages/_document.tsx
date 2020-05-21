@@ -5,12 +5,17 @@ import { prefersLightMode } from '../components/PrefersLightMode';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import blue from '@material-ui/core/colors/blue';
 import purple from '@material-ui/core/colors/purple';
+import { processServerEnv } from '../lib/server/env';
 
 export default class MyDocument extends Document
 {
 
 	static async getInitialProps(ctx)
 	{
+		console.log(`Document:getInitialProps`);
+
+		processServerEnv(ctx)
+
 		const sheet = new ServerStyleSheets();
 
 		const initialProps = await Document.getInitialProps({
