@@ -5,7 +5,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "engines": {
+  "engines_": {
     "node": "12.x",
     "yarn": "1.22.0"
   },
@@ -15,12 +15,12 @@
     "lerna:publish": "npx lerna publish",
     "lerna:publish:yes": "npx lerna publish --yes --cd-version patch",
     "prepublish:lockfile": "npx sync-lockfile .",
-    "ncu": "npx yarn-tool ncu -u",
+    "ncu": "npx yarn-tool ncu -u && npx yarn-tool ws exec yarn-tool ncu -- -u",
     "sort-package-json": "npx yarn-tool sort",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "@bluelovers/tsconfig": "latest",
+    "@bluelovers/tsconfig": "^1.0.19",
     "@types/node": "*"
   },
   "peerDependencies": {
