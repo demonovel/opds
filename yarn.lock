@@ -1038,10 +1038,31 @@
   resolved "https://registry.npmjs.org/@jsdom-extra/virtual-console/-/virtual-console-1.0.1.tgz#1885b487b43bcf975eba40635d24de888ade0aea"
   integrity sha512-YtEhIV5Wz/hwlvRsKGhnBJe3V78fVLWXc/PpgOESQm2e87tY4DxN20TdiPLgk7ZgtjKOIx/0+lN31PxwBZAFyw==
 
+"@lazy-http/get-user-agent@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.npmjs.org/@lazy-http/get-user-agent/-/get-user-agent-1.0.3.tgz#0a86fd00aad03c9c26a8f5533a82210f3e4bf6e6"
+  integrity sha512-9i5bDkAAOMLcfo9CKw7uZMkZKH+f8giP8pqHVMIzYgHDxTgqfa+c9afkOD2CrhxLHVHuMuKEXOa4zSu5rXzT3w==
+  dependencies:
+    "@lazy-http/get-window" "^1.0.1"
+    value-from-record "^1.0.2"
+
+"@lazy-http/get-window@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/@lazy-http/get-window/-/get-window-1.0.1.tgz#35c490519054c5420c50373dfe758e0c9c2a8fe1"
+  integrity sha512-eK7CiO2tot87ewmAa/TgNJBoOJU5ShRPI8gp1lIhHp352XJDA+k/JQlYvujAwIVyrfLVk7EQUUFxtN7Ry+VfvA==
+
 "@lazy-react/get-next-ctx@^1.0.1":
   version "1.0.1"
   resolved "https://registry.npmjs.org/@lazy-react/get-next-ctx/-/get-next-ctx-1.0.1.tgz#339013dd5c85a4e8fbe07fd046f067f65e6d59ac"
   integrity sha512-pJNqFaDsE4B4vdTvS0GfUfGfa6zqN+IVoEXAtpNwDijR5FV4R7cdeYiakc+ViD+kbK9C8Q1lVhNZe5YBWG6Adg==
+
+"@lazy-react/next-useragent@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/@lazy-react/next-useragent/-/next-useragent-1.0.1.tgz#bcdc3ff7efeeecc7b86adc5fa1783d85233ba5f3"
+  integrity sha512-Ejkig73wxFj3rgM0txMN/j8VUr4UxzgBSRoiRT/B25JVdtPjbPKE9WhAEci2UimR5taTwiHQPiZ5hh+HJQWMmA==
+  dependencies:
+    "@lazy-http/get-user-agent" "^1.0.3"
+    "@lazy-react/get-next-ctx" "^1.0.1"
 
 "@material-ui/core@^4.9.14":
   version "4.9.14"
@@ -4584,6 +4605,11 @@ is-obj@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/is-obj/-/is-obj-2.0.0.tgz#473fb05d973705e3fd9620545018ca8e22ef4982"
   integrity sha512-drqDG3cbczxxEJRoOXcOjtdp1J/lyp1mNn0xaznRs8+muBhgQcrnbspox5X5fOw0HnMnbfDzvnEMEtqDEJEo8w==
+
+is-opds-agent@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.npmjs.org/is-opds-agent/-/is-opds-agent-1.0.2.tgz#14e90ededd59d355e4476edf4ee5fa51edca5e7b"
+  integrity sha512-adxuM6xUkTGaZKK+XSDgRxyYAE9GDRIjBNAr3JS+Ih/9lWbL59+nkkzZYmopgJWs4Vk1iVfLar+4Ar/sNlk3rQ==
 
 is-plain-obj@^1.0.0:
   version "1.1.0"
@@ -8427,6 +8453,11 @@ value-equal@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/value-equal/-/value-equal-1.0.1.tgz#1e0b794c734c5c0cade179c437d356d931a34d6c"
   integrity sha512-NOJ6JZCAWr0zlxZt+xqCHNTEKOsrks2HQd4MqhP1qy4z1SkbEP467eNx6TgDKXMvUOb+OENfJCZwM+16n7fRfw==
+
+value-from-record@^1.0.2:
+  version "1.0.3"
+  resolved "https://registry.npmjs.org/value-from-record/-/value-from-record-1.0.3.tgz#5c8c1f526c281883f9b393023383b1468bf5a086"
+  integrity sha512-P4MxnBYqksA9Y12PdG5n0luXkCeZ/qkdBxzzq+l0RI9FTBVUThrkE83AvEv0kUvTrAAmxOOwhkR2Y41ZqtNpkA==
 
 vendors@^1.0.0:
   version "1.0.4"

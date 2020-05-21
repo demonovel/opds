@@ -38,11 +38,14 @@ import { useStorage } from 'react-use-localstorage2';
 import Container from '@material-ui/core/Container';
 import { isZeitNow } from '../../lib/util/nextjs/zeit-now';
 import fetchAll from '../../lib/util/fetch/fetchAll';
+import getNextUserAgent from '@lazy-react/next-useragent';
+import isOPDSAgent from 'is-opds-agent';
 
 interface INoveIndexComponentType extends INovelListComponentType
 {
 	defaultPage?: number,
 	isAll?: boolean,
+	userAgent?: string,
 }
 
 const Index = (prop?: INoveIndexComponentType) =>
@@ -59,7 +62,7 @@ const Index = (prop?: INoveIndexComponentType) =>
 
 	let [fullMathSearch, changeFullMathSearch] = useState(false);
 
-	let [displayMode, setDisplayMode] = useStorage('novelDisplayMode', 0);
+	let [displayMode, setDisplayMode] = useStorage('novelDisplayMode', isOPDSAgent(prop.userAgent || '') ? 1 : 0);
 
 	const updatePage = (newPage: number) =>
 	{
@@ -561,10 +564,14 @@ const Index = (prop?: INoveIndexComponentType) =>
 {
 	let ctx = getCTX(_ctx);
 
+	const userAgent = getNextUserAgent(ctx);
+
 	if (typeof window !== 'undefined' || !ctx.req)
 	{
 		console.log(`getInitialProps`);
-		return {};
+		return {
+			userAgent,
+		};
 	}
 
 	let body: RequestInit["body"] | Record<string, any>;
@@ -625,6 +632,7 @@ const Index = (prop?: INoveIndexComponentType) =>
 		defaultPage: (ctx?.query?.page as any) | 0 || 1,
 		dataList,
 		isAll,
+		userAgent,
 	} as INoveIndexComponentType
 };
 
