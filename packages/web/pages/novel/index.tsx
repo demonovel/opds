@@ -6,7 +6,7 @@
 //import PaginationItem from '@material-ui/lab/PaginationItem';
 import Pagination from '../../components/router/Pagination';
 import { Typography } from '@material-ui/core';
-import React, { useState, useEffect, createRef } from 'react';
+import React, { useState, useEffect, createRef, FunctionComponent, Component } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import { ICachedJSONRowPlus } from 'build-json-cache/lib/types';
 import ListCard from '../../components/novel/ListCard';
@@ -36,6 +36,8 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSiteID from '../../components/novel/ListItemSiteID';
 import { useStorage } from 'react-use-localstorage2';
 import Container from '@material-ui/core/Container';
+import { isZeitNow } from '../../lib/util/nextjs/zeit-now';
+import fetchAll from '../../lib/util/fetch/fetchAll';
 
 interface INoveIndexComponentType extends INovelListComponentType
 {
@@ -214,7 +216,6 @@ const Index = (prop?: INoveIndexComponentType) =>
 		field?: ITSRequireAtLeastOne<Record<keyof ICachedJSONRowPlus, unknown>>
 	} = {}) =>
 	{
-
 		return doSearchCore(options as any)
 			.then(data =>
 			{
@@ -601,19 +602,23 @@ const Index = (prop?: INoveIndexComponentType) =>
 	}
 	else
 	{
-		if (typeof window === 'undefined' && ctx && !ctx?.req?.headers?.['x-now-deployment-url'])
+		/*
+		if (typeof window === 'undefined' && ctx && !isZeitNow(ctx))
 		{
 			dataList = await importBuildJsonCache<ICachedJSONRowPlus[]>('build.all.array')
 				.then(data => handleBuildJsonCacheList(data))
 		}
-		else if (0)
+		else
 		{
 			dataList = await fetchNovelSearch(body, {}, ctx)
 				.catch(e => [])
 			;
 		}
+		 */
 
-		isAll = !!dataList.length;
+		({ dataList, isAll } = await fetchAll());
+
+		//isAll = !!dataList.length;
 	}
 
 	return {
