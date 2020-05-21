@@ -214,7 +214,8 @@ const Index = (prop?: INoveIndexComponentType) =>
 		field?: ITSRequireAtLeastOne<Record<keyof ICachedJSONRowPlus, unknown>>
 	} = {}) =>
 	{
-		return doSearchCore(options)
+
+		return doSearchCore(options as any)
 			.then(data =>
 			{
 
@@ -605,7 +606,7 @@ const Index = (prop?: INoveIndexComponentType) =>
 			dataList = await importBuildJsonCache<ICachedJSONRowPlus[]>('build.all.array')
 				.then(data => handleBuildJsonCacheList(data))
 		}
-		else
+		else if (0)
 		{
 			dataList = await fetchNovelSearch(body, {}, ctx)
 				.catch(e => [])
