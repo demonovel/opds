@@ -15,7 +15,7 @@
     "build": "esm-ts-node ./script/build && next build",
     "build:export": "yarn build && next export",
     "coverage": "npx nyc yarn run test",
-    "dev": "next dev",
+    "dev": "next dev -p 80",
     "lint": "npx eslint **/*.ts",
     "ncu": "npx yarn-tool ncu -u",
     "npm:publish": "npm publish",
@@ -33,9 +33,9 @@
     "@demonovel/cached-data": "^1.0.24",
     "@lazy-react/get-next-ctx": "^1.0.1",
     "@lazy-react/next-useragent": "^1.0.1",
-    "@material-ui/core": "^4.9.14",
+    "@material-ui/core": "^4.10.0",
     "@material-ui/icons": "^4.9.1",
-    "@material-ui/lab": "^4.0.0-alpha.53",
+    "@material-ui/lab": "^4.0.0-alpha.54",
     "@use-it/event-listener": "^0.1.3",
     "@zeit/next-sass": "^1.0.1",
     "build-json-cache": "1",
@@ -67,13 +67,13 @@
     "@bluelovers/tsconfig": "^1.0.19",
     "@types/lodash": "^4.14.152",
     "@types/moment-timezone": "^0.5.13",
-    "@types/node": "^14.0.4",
+    "@types/node": "^14.0.5",
     "@types/node-sass": "^4.11.1",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
     "esm": "^3.2.25",
     "esm-ts-node": "^1.0.5",
     "ts-node": "^8.10.1",
-    "typescript": "^4.0.0-dev.20200521"
+    "typescript": "^4.0.0-dev.20200523"
   }
 }

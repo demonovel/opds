@@ -138,6 +138,8 @@ const Index = (prop?: INoveIndexComponentType) =>
 	{
 		//console.log(searchRef.current);
 
+		console.log(`doSearchCore`, options)
+
 		if (options?.reset)
 		{
 			searchRef.current.value = '';

@@ -57,6 +57,7 @@ export function ipfsLink(novel: ICachedJSONRowPlus, server?: string)
 {
 	switch (novel.siteID)
 	{
+		case EnumSiteID.masiro:
 		case EnumSiteID.esjzone:
 		case EnumSiteID.wenku8:
 		case EnumSiteID.dmzj:

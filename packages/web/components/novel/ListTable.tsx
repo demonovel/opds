@@ -207,6 +207,7 @@ export const ListTable = withWidth()((prop: INovelListTableComponentType) =>
 				let ipfs =  ipfsLink(novel, prop.novelOpdsNowServer);
 
 				return (<Box
+					key={novel.uuid}
 					component="div"
 					p={1}
 				>
