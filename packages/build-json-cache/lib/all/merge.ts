@@ -7,7 +7,7 @@ import { join } from 'path';
 import { __rootCache } from '../../__rootCache';
 import Bluebird from 'bluebird';
 import { ICachedJSONRowPlus } from '../types';
-import { cn2tw_min } from 'cjk-conv/lib/zh/convert/min';
+import { cn2tw_min } from '@lazy-cjk/zh-convert/min';
 
 export default Bluebird
 	.props([

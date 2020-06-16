@@ -1,7 +1,7 @@
 /**
  * Created by user on 2020/2/23.
  */
-import { slugify } from 'cjk-conv/lib/zh/table/list';
+import { slugify } from '@lazy-cjk/zh-slugify';
 import removeZeroWidth from 'zero-width/lib';
 import { toHalfWidth } from 'str-util';
 

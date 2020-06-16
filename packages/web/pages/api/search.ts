@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { array_unique_overwrite } from 'array-hyper-unique';
 import sortUpdatedComp from 'build-json-cache/lib/util/sortUpdated';
 import { ICachedJSONRowPlus } from 'build-json-cache/lib/types';
-import { testRe, toRe} from '../../lib/novel/search';
+import { testRe, toRe } from '../../lib/novel/search';
 import { handleBuildJsonCacheList } from '../../lib/novel';
 import { importBuildJsonCache } from '../../lib/novel/loader';
 import { PassThrough } from "stream";
@@ -96,7 +96,8 @@ async function API_HANDLER(req: NextApiRequest, res: NextApiResponse)
 	let q3 = {} as Record<keyof ICachedJSONRowPlus, RegExp[]>;
 
 	let bool = query.all || Object.entries(q2)
-		.map(([k, v]) => {
+		.map(([k, v]) =>
+		{
 
 			q3[k] = toRe(v as any, {
 				or: true,
@@ -149,7 +150,8 @@ async function API_HANDLER(req: NextApiRequest, res: NextApiResponse)
 			let bool = true;
 
 			bool = (Object.entries(q3) as any as ([string, RegExp[]])[])
-				.every(([k, v]) => {
+				.every(([k, v]) =>
+				{
 
 					if (!v.length)
 					{
@@ -222,22 +224,25 @@ async function API_HANDLER(req: NextApiRequest, res: NextApiResponse)
 	;
 };
 
-export default (req: NextApiRequest, res: NextApiResponse, ...argv) => {
+export default (req: NextApiRequest, res: NextApiResponse, ...argv) =>
+{
 	return Promise.resolve()
 		// @ts-ignore
 		.then(v => API_HANDLER(req, res, ...argv))
-		.catch(e => {
-			if (process.env.NODE_ENV === 'production') {
+		.catch(e =>
+		{
+			if (process.env.NODE_ENV === 'production')
+			{
 				return res
 					.status(500)
 					.json({
 						error: true,
 						message: String(e),
 					})
-				;
+					;
 			}
 
 			return Promise.reject(e);
 		})
-	;
+		;
 }
