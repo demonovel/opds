@@ -23,7 +23,7 @@ module.exports = chain([
 	},
 ], chain([
 
-	withSass,
+	//withSass,
 	withFonts,
 
 	withWorkspacesSupport,
