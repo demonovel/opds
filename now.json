@@ -16,8 +16,8 @@
       "continue": true
     },
     {
-      "src": "(.*)",
-      "dest": "packages/web$1",
+      "src": "/(.*)",
+      "dest": "packages/web/$1",
       "continue": true
     }
 
