@@ -5,26 +5,39 @@
   "workspaces": [
     "packages/*"
   ],
-  "engines_": {
-    "node": "12.x",
-    "yarn": "1.22.0"
-  },
   "scripts": {
-    "build": "yarn && cd packages/web && next build",
     "start": "cd packages/web && next start",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "yarn && cd packages/web && next build",
     "lerna:publish": "npx lerna publish",
     "lerna:publish:yes": "npx lerna publish --yes --cd-version patch",
     "prepublish:lockfile": "npx sync-lockfile .",
     "ncu": "npx yarn-tool ncu -u && npx yarn-tool ws exec yarn-tool ncu -- -u",
-    "sort-package-json": "npx yarn-tool sort",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "sort-package-json": "npx yarn-tool sort && npx yarn-tool ws exec yarn-tool sort"
   },
+  "resolutions": {},
   "devDependencies": {
     "@bluelovers/tsconfig": "^1.0.20",
-    "@types/node": "*"
+    "@types/bluebird": "^3.5.32",
+    "@types/cheerio": "^0.22.21",
+    "@types/fs-extra": "^9.0.1",
+    "@types/hash-sum": "^1.0.0",
+    "@types/lodash": "^4.14.160",
+    "@types/moment-timezone": "^0.5.30",
+    "@types/node": "*",
+    "@types/node-sass": "^4.11.1",
+    "@types/react": "^16.9.47",
+    "@types/react-dom": "^16.9.8",
+    "esm": "^3.2.25",
+    "esm-ts-node": "^1.0.7",
+    "ts-node": "^9.0.0",
+    "typescript": "next"
   },
   "peerDependencies": {
     "lerna": "^3"
   },
-  "resolutions": {}
+  "engines_": {
+    "node": "12.x",
+    "yarn": "1.22.0"
+  }
 }

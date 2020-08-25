@@ -6,26 +6,22 @@
   "license": "ISC",
   "author": "",
   "main": "index.js",
-  "engines_": {
-    "node": "> 12.x",
-    "yarn": "> 1.22.0"
-  },
   "scripts": {
+    "start": "next start",
+    "dev": "next dev -p 80",
+    "coverage": "npx nyc yarn run test",
+    "lint": "npx eslint **/*.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:mocha": "npx mocha --require ts-node/register \"!(node_modules)/**/*.{test,spec}.{ts,tsx}\"",
     "prebuild": "node -v",
     "build": "esm-ts-node ./script/build && next build",
     "build:export": "yarn build && next export",
-    "coverage": "npx nyc yarn run test",
-    "dev": "next dev -p 80",
-    "lint": "npx eslint **/*.ts",
-    "ncu": "npx yarn-tool ncu -u",
     "npm:publish": "npm publish",
-    "postpublish_": "git commit -m \"chore(release): publish\" .",
     "prepublish:lockfile": "npx sync-lockfile .",
     "prepublishOnly_": "yarn run ncu && yarn run sort-package-json && yarn run test",
+    "postpublish_": "git commit -m \"chore(release): publish\" .",
+    "ncu": "npx yarn-tool ncu -u",
     "sort-package-json": "npx yarn-tool sort",
-    "start": "next start",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "test:mocha": "npx mocha --require ts-node/register \"!(node_modules)/**/*.{test,spec}.{ts,tsx}\"",
     "tsc:default": "tsc -p tsconfig.json",
     "tsc:esm": "tsc -p tsconfig.esm.json"
   },
@@ -43,8 +39,8 @@
     "is-req-https2": "^1.0.7",
     "isomorphic-unfetch": "^3.0.0",
     "jsx-linebreak": "^1.0.10",
-    "lodash": "^4.17.19",
-    "material-table": "^1.68.0",
+    "lodash": "^4.17.20",
+    "material-table": "^1.69.0",
     "material-ui-theme-state": "^1.0.22",
     "moment": "^2.27.0",
     "moment-timezone": "^0.5.31",
@@ -62,17 +58,9 @@
     "ts-type": "^1.2.32",
     "webpack-workspaces-support": "^1.0.6"
   },
-  "devDependencies": {
-    "@bluelovers/tsconfig": "^1.0.20",
-    "@types/lodash": "^4.14.159",
-    "@types/moment-timezone": "^0.5.30",
-    "@types/node": "^14.0.27",
-    "@types/node-sass": "^4.11.1",
-    "@types/react": "^16.9.46",
-    "@types/react-dom": "^16.9.8",
-    "esm": "^3.2.25",
-    "esm-ts-node": "^1.0.5",
-    "ts-node": "^8.10.2",
-    "typescript": "next"
+  "devDependencies": {},
+  "engines_": {
+    "node": "> 12.x",
+    "yarn": "> 1.22.0"
   }
 }
